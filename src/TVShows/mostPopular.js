@@ -7,13 +7,14 @@ dotenv.config();
 const router = express.Router();
 const APikey = process.env.APikey
 
-router.get("/name/:ime", async (req, res) => {
+router.get("/mostPopular/", async (req, res) => {
 
-  let request = await axios.get(`https://imdb-api.com/en/API/SearchMovie/${APikey}/${req.params.ime}`);
+  let request = await axios.get(`https://imdb-api.com/en/API/MostPopularTVs/${APikey}`);
   let data = request.data
 
   res.json(data)
 })
 
-export default router
 
+
+export default router
