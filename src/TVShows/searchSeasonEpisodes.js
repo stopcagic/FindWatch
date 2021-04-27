@@ -11,17 +11,20 @@ router.get("/seasonEpisodes", async (req, res) => {
 
   let name = req.query.name;
   let season = req.query.season;
-  let IMDbId = req.params.id;
+  let IMDbId = req.query.id;
   let data;
 
   if (name) {
-    let movieTitle = await axios.get(`https://imdb-api.com/en/API/SearchMovie/${APikey}/${req.params.ime}`);
-    IMDbId = movieTitle.data.results[0].id;
-    setTimeout(() => 2000)
+    let SeriesTitle = await axios.get(`https://imdb-api.com/en/API/SearchSeries/${APikey}/${name}`);
+    IMDbId = SeriesTitle.data.results[0].id;
+
+    data = await fetchSeason(IMDbId, season);
+  }
+  else if (IMDbId) {
     data = await fetchSeason(IMDbId, season);
   }
   else {
-    data = await fetchSeason(IMDbId, season);
+    res.json({ error: "You need to send either name or IMDb ID" })
   }
 
   res.json(data);
