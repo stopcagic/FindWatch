@@ -1,0 +1,1 @@
+export default ['FullActor', 'FullCast', 'Posters', 'Images', 'Trailer', 'Ratings', 'Wikipedia'];
