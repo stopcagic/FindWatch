@@ -53,8 +53,7 @@ app.get('/info', async (req, res) => {
     data = await Utils.fetchInfo(IMDbId, queryFilters);
   }
   else if (name) {
-    let SeriesTitle = await axios.get(`https://imdb-api.com/en/API/SearchSeries/${APikey}/${name}`);
-    IMDbId = SeriesTitle.data.results[0].id;
+    IMDbId = await Utils.fetchID(name);
 
     data = await Utils.fetchInfo(IMDbId, queryFilters);
   }
@@ -65,6 +64,41 @@ app.get('/info', async (req, res) => {
   res.json(data);
 })
 
+app.get("/rating", async (req, res) => {
+
+  let name = req.query.name;
+  let IMDbId = req.query.id;
+  let data;
+
+  if (IMDbId != undefined) {
+    data = await Utils.fetchRatings(IMDbId);
+  }
+  else if (name) {
+    IMDbId = await Utils.fetchID(name);
+    data = await Utils.fetchRatings(IMDbId);
+  }
+  else {
+    res.status(400).json("Title does not exist or incorrect IMDB ID.")
+  }
+
+  res.json(data);
+})
+
+app.get("/boxOffice/:time", async (req, res) => {
+  let filter = req.params.time;
+  let data;
+  if (filter == 'allTime') {
+    let request = await axios.get(`https://imdb-api.com/en/API/BoxOfficeAllTime/${APikey}`)
+    data = request.data;
+
+  }
+  else if (filter == 'week') {
+    let request = await axios.get(`https://imdb-api.com/en/API/BoxOffice/${APikey}`)
+    data = request.data;
+  }
+
+  res.json(data);
+})
 
 app.use("/movies", searchMovies)
 app.use("/movies", top250)

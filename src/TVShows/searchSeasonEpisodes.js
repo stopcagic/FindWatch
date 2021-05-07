@@ -19,8 +19,7 @@ router.get("/seasonEpisodes", async (req, res) => {
     data = await Utils.searchEpisodes(IMDbId, season);
   }
   else if (name) {
-    let SeriesTitle = await axios.get(`https://imdb-api.com/en/API/SearchSeries/${APikey}/${name}`);
-    IMDbId = SeriesTitle.data.results[0].id;
+    IMDbId = await Utils.fetchID(name);
 
     data = await Utils.searchEpisodes(APikey, IMDbId, season);
   }
