@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import axios from "axios";
+
 import searchMovies from "./Movies/searchMovieTitles"
 import top250 from "./Movies/top250Movies"
 import mostPopularMovies from "./Movies/mostPopular"
@@ -13,15 +14,27 @@ import seasonEpisodes from "./TVShows/searchSeasonEpisodes"
 import mostPopularTVSeries from "./TVShows/mostPopular"
 import Utils from "./Utils/callEndpointUtil"
 import possibleFilters from './Models/possibleFilters';
+import connect from "./db/index"
 
 dotenv.config();
 const app = express()
 const port = process.env.PORT
 const APikey = process.env.APikey
 
-
 app.get('/', async (req, res) => {
-  res.send('Test')
+  try {
+    let db = await connect();
+    let cursor = db.collection("users").find()
+
+    cursor.forEach(element => {
+      res.json(element)
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.json("Failed to fetch data")
+  }
+
 })
 
 app.get('/search', async (req, res) => {

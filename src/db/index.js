@@ -1,11 +1,11 @@
-import { MongoClient } from ("mongodb")
+import { MongoClient } from "mongodb"
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const db_pw = process.env.DB_PASSWORD
 
-const uri = `mongodb+srv://admin:${db_pw}@users.nxuyt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = process.env.CONNECTION_STRING;
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -28,6 +28,7 @@ export default () => {
         else {
           console.log("Database connected successfully!");
           db = client.db("FindWatch");
+
           resolve(db);
         }
       });
