@@ -13,22 +13,27 @@ import top250TVs from "./TVShows/top250TVs"
 import seasonEpisodes from "./TVShows/searchSeasonEpisodes"
 import mostPopularTVSeries from "./TVShows/mostPopular"
 import Utils from "./Utils/callEndpointUtil"
+import tokenVerify from "./Utils/tokenVerify"
 import possibleFilters from './Models/possibleFilters';
 import connect from "./db/index"
+import register from "./User/register";
+import login from "./User/login";
 
 dotenv.config();
-const app = express()
+
+const app = express();
 const port = process.env.PORT
 const APikey = process.env.APikey
 
-app.get('/', async (req, res) => {
+app.use(express.json());
+
+app.get('/', [tokenVerify], async (req, res) => {
   try {
     let db = await connect();
     let cursor = db.collection("users").find()
 
-    cursor.forEach(element => {
-      res.json(element)
-    });
+    let data = await cursor.toArray()
+    res.json(data)
 
   } catch (error) {
     console.log(error);
@@ -37,7 +42,7 @@ app.get('/', async (req, res) => {
 
 })
 
-app.get('/search', async (req, res) => {
+app.get('/search', [tokenVerify], async (req, res) => {
 
   let word = req.query.expression;
   let request = await axios.get(`https://imdb-api.com/en/API/SearchAll/${APikey}/${word}`);
@@ -46,7 +51,7 @@ app.get('/search', async (req, res) => {
   res.json(data);
 })
 
-app.get('/info', async (req, res) => {
+app.get('/info', [tokenVerify], async (req, res) => {
 
   let data;
   let allFilters = possibleFilters
@@ -77,7 +82,7 @@ app.get('/info', async (req, res) => {
   res.json(data);
 })
 
-app.get("/rating", async (req, res) => {
+app.get("/rating", [tokenVerify], async (req, res) => {
 
   let name = req.query.name;
   let IMDbId = req.query.id;
@@ -97,7 +102,7 @@ app.get("/rating", async (req, res) => {
   res.json(data);
 })
 
-app.get("/boxOffice/:time", async (req, res) => {
+app.get("/boxOffice/:time", [tokenVerify], async (req, res) => {
   let filter = req.params.time;
   let data;
   if (filter == 'allTime') {
@@ -113,17 +118,20 @@ app.get("/boxOffice/:time", async (req, res) => {
   res.json(data);
 })
 
-app.use("/movies", searchMovies)
-app.use("/movies", top250)
-app.use("/movies", mostPopularMovies)
-app.use("/movies", inTheaters)
-app.use("/movies", commingSoon)
+app.use("/movies", [tokenVerify], searchMovies)
+app.use("/movies", [tokenVerify], top250)
+app.use("/movies", [tokenVerify], mostPopularMovies)
+app.use("/movies", [tokenVerify], inTheaters)
+app.use("/movies", [tokenVerify], commingSoon)
 
-app.use("/series", searchTVSeries)
-app.use("/series", searchEpisodes)
-app.use("/series", top250TVs)
-app.use("/series", seasonEpisodes)
-app.use("/series", mostPopularTVSeries)
+app.use("/series", [tokenVerify], searchTVSeries)
+app.use("/series", [tokenVerify], searchEpisodes)
+app.use("/series", [tokenVerify], top250TVs)
+app.use("/series", [tokenVerify], seasonEpisodes)
+app.use("/series", [tokenVerify], mostPopularTVSeries)
+
+app.use("/user", register)
+app.use("/user", login)
 
 
 app.listen(port, () => console.log(`http://localhost:${port}`))
