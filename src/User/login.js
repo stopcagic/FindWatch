@@ -22,7 +22,7 @@ router.post("/login", async (req, res) => {
       if (!user) throw "Invalid username or email.";
     }
     else if (req.body.username) {
-      user = await db.collection("users").findOne({ email: req.body.username })
+      user = await db.collection("users").findOne({ username: req.body.username })
       if (!user) throw "Invalid username or email.";
     }
 
@@ -37,6 +37,7 @@ router.post("/login", async (req, res) => {
     res.send(token)
 
   } catch (error) {
+    console.log(error);
     res.status(400).send(error)
   }
 })
