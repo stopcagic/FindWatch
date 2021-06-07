@@ -9,7 +9,7 @@ const Utils = {
 
   async fetchID(name) {
     let SeriesTitle = await axios.get(`https://imdb-api.com/en/API/Search/${APikey}/${name}`);
-    console.log("IM HEREEEEEE" + SeriesTitle.data.results[0].id);
+
     return SeriesTitle.data.results[0].id;
   },
   async searchEpisodes(IMDbId, season) {

@@ -34,7 +34,11 @@ router.post("/login", async (req, res) => {
       username: user.username,
       email: user.email,
     }, process.env.TOKEN_SECRET, { expiresIn: "1w" })
-    res.send(token)
+
+    res.send({
+      token: token,
+      username: user.username
+    })
 
   } catch (error) {
     console.log(error);
