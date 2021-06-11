@@ -22,16 +22,9 @@ router.post("/register", async (req, res) => {
     const user = new User({
       username: req.body.username,
       password: hashPassword,
-      email: req.body.email,
-      registeredAt: new Date(),
-      lastLogin: new Date(),
-      isLoggedIn: true,
-      userData: null
+      email: req.body.email
     })
     const savedUser = await db.collection("users").insertOne(user);
-    //insertati prazan userData
-    //isto tako watchingData
-    //comment ne treba
     res.json(savedUser.insertedId)
 
   } catch (err) {

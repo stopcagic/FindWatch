@@ -5,34 +5,42 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     min: 5,
-    max: 255
+    max: 255,
+    default: ""
   },
   password: {
     type: String,
     required: true,
     min: 6,
-    max: 255
+    max: 255,
+    default: ""
   },
   email: {
     type: String,
     required: true,
-    min: 6,
-    max: 255
+    min: 8,
+    max: 255,
+    default: ""
   },
   registeredAt: {
     type: Date,
-    required: true
+    required: true,
+    default: new Date()
   },
   lastLogin: {
     type: Date,
-    required: true
+    required: true,
+    default: new Date()
   },
   isLoggedIn: {
     type: Boolean,
-    requred: true
+    requred: true,
+    default: false
   },
   userData: {
-    type: String
+    type: Array,
+    required: true,
+    default: null
   }
 })
 
