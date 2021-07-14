@@ -1,5 +1,5 @@
+import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
-import { ObjectID } from "mongodb";
 
 const movieUserSchema = new mongoose.Schema({
   imdb_id: {
@@ -16,7 +16,7 @@ const movieUserSchema = new mongoose.Schema({
     default: false
   },
   rating: {
-    type: Float32Array,
+    type: Decimal128,
     default: 0
   },
   favourite: {
@@ -31,17 +31,8 @@ const movieUserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  comment_id: {
-    type: Array,
-    default: false
-  },
   user_id: {
-    type: ObjectID,
-    required: true,
-    default: 0
-  },
-  watching_data_id: {
-    type: ObjectID,
+    type: String,
     required: true,
     default: 0
   }

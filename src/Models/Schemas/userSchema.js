@@ -36,11 +36,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     requred: true,
     default: false
-  },
-  userData: {
-    type: Array,
-    required: true,
-    default: null
   }
 })
 

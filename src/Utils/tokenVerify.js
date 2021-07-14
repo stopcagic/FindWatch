@@ -16,7 +16,6 @@ export default (req, res, next) => {
       return res.status(401).send("Access denied.")
     } else {
       req.jwt = jwt.verify(token, process.env.TOKEN_SECRET);
-      console.log(jwt.decode(token));
       return next();
     }
   } catch (error) {

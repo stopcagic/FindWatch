@@ -2,7 +2,8 @@ import express from "express";
 import bcrypt from "bcryptjs"
 import { registrationValidation } from "../Utils/validate"
 import connect from "../db/index"
-import User from "../Models/userSchema"
+import createSchemas from "../Utils/createSchemas"
+
 
 const router = express.Router();
 
@@ -19,11 +20,7 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt)
 
-    const user = new User({
-      username: req.body.username,
-      password: hashPassword,
-      email: req.body.email
-    })
+    const user = createSchemas.CreateNewUserSchema(req, hashPassword)
     const savedUser = await db.collection("users").insertOne(user);
     res.json(savedUser.insertedId)
 
@@ -33,5 +30,5 @@ router.post("/register", async (req, res) => {
 
 })
 
-
 export default router;
+

@@ -18,6 +18,7 @@ import possibleFilters from './Models/possibleFilters';
 import connect from "./db/index"
 import register from "./User/register";
 import login from "./User/login";
+import { ObjectId } from 'mongodb';
 
 dotenv.config();
 
@@ -27,12 +28,12 @@ const APikey = process.env.APikey
 
 app.use(express.json());
 
-app.get('/', [tokenVerify], async (req, res) => {
+app.get('/', async (_, res) => {
   try {
     let db = await connect();
-    let cursor = db.collection("users").find()
+    let cursor = db.collection("users").findOne({ _id: ObjectId("60958f1fafaa5c900d746867") })
 
-    let data = await cursor.toArray()
+    let data = await cursor
     res.json(data)
 
   } catch (error) {
