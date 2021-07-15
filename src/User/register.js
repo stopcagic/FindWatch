@@ -22,12 +22,15 @@ router.post("/register", async (req, res) => {
 
     const user = createSchemas.CreateNewUserSchema(req, hashPassword)
     const savedUser = await db.collection("users").insertOne(user);
-    res.json(savedUser.insertedId)
+
+    res.json({
+      username: user.username,
+      password: user.password
+    })
 
   } catch (err) {
     res.status(400).send(err)
   }
-
 })
 
 export default router;

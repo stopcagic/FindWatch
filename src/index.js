@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import axios from "axios";
+import { ObjectId } from 'mongodb';
 
 import searchMovies from "./Movies/searchMovieTitles"
 import top250 from "./Movies/top250Movies"
@@ -18,7 +19,7 @@ import possibleFilters from './Models/possibleFilters';
 import connect from "./db/index"
 import register from "./User/register";
 import login from "./User/login";
-import { ObjectId } from 'mongodb';
+import movieUserData from "./userData/movieUserData";
 
 dotenv.config();
 
@@ -134,5 +135,6 @@ app.use("/series", [tokenVerify], mostPopularTVSeries)
 app.use("/user", register)
 app.use("/user", login)
 
+app.use("/data", [tokenVerify], movieUserData)
 
 app.listen(port, () => console.log(`http://localhost:${port}`))

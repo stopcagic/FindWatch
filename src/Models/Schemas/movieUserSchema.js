@@ -19,7 +19,7 @@ const movieUserSchema = new mongoose.Schema({
     type: Decimal128,
     default: 0
   },
-  favourite: {
+  favorite: {
     type: Boolean,
     default: false
   },
