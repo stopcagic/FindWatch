@@ -1,6 +1,12 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const episodeData = new mongoose.Schema({
+  season_data_Id: {
+    type: ObjectId,
+    required: true,
+    default: ""
+  },
   episode_number: {
     type: Number,
     required: true,
@@ -9,11 +15,6 @@ const episodeData = new mongoose.Schema({
   watched: {
     type: Boolean,
     default: false
-  },
-  series_data_Id: {
-    type: String,
-    required: true,
-    default: ""
   }
 })
 

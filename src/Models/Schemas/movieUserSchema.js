@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
 
@@ -32,7 +33,7 @@ const movieUserSchema = new mongoose.Schema({
     default: false
   },
   user_id: {
-    type: String,
+    type: ObjectId,
     required: true,
     default: 0
   }

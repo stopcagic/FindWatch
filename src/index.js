@@ -19,7 +19,9 @@ import possibleFilters from './Models/possibleFilters';
 import connect from "./db/index"
 import register from "./User/register";
 import login from "./User/login";
-import movieUserData from "./userData/movieUserData";
+import movieUserData from "./db/db_data/movieUserData";
+import userSeasonData from "./db/db_data/userSeasonData";
+import userEpisodeData from "./db/db_data/userEpisodeData";
 
 dotenv.config();
 
@@ -136,5 +138,7 @@ app.use("/user", register)
 app.use("/user", login)
 
 app.use("/data", [tokenVerify], movieUserData)
+app.use("/data", [tokenVerify], userSeasonData)
+app.use("/data", [tokenVerify], userEpisodeData)
 
 app.listen(port, () => console.log(`http://localhost:${port}`))

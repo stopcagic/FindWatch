@@ -1,3 +1,4 @@
+import { Int32, ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const seasonData = new mongoose.Schema({
@@ -12,16 +13,16 @@ const seasonData = new mongoose.Schema({
     default: false
   },
   movie_user_data_id: {
-    type: String,
+    type: ObjectId,
     required: true,
     default: ""
   },
   user_id: {
-    type: String,
+    type: ObjectId,
     required: true,
     default: ""
   },
 })
 
 
-export default mongoose.model('SeadonData', seasonData);
+export default mongoose.model('SeasonData', seasonData);

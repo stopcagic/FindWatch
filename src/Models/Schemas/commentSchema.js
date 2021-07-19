@@ -1,8 +1,9 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const CommentSchema = new mongoose.Schema({
   user_id: {
-    type: String,
+    type: ObjectId,
     required: true,
     default: ""
   },
