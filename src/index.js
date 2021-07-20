@@ -22,6 +22,8 @@ import login from "./User/login";
 import movieUserData from "./db/db_data/movieUserData";
 import userSeasonData from "./db/db_data/userSeasonData";
 import userEpisodeData from "./db/db_data/userEpisodeData";
+import userCommentsData from "./db/db_data/userCommentData";
+import userCommentLikes from "./db/db_data/userCommentLikes";
 
 dotenv.config();
 
@@ -140,5 +142,7 @@ app.use("/user", login)
 app.use("/data", [tokenVerify], movieUserData)
 app.use("/data", [tokenVerify], userSeasonData)
 app.use("/data", [tokenVerify], userEpisodeData)
+app.use("/data", [tokenVerify], userCommentsData)
+app.use("/data", [tokenVerify], userCommentLikes)
 
 app.listen(port, () => console.log(`http://localhost:${port}`))

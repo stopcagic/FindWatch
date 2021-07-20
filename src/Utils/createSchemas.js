@@ -42,5 +42,24 @@ export default {
       episode_number: data.episode_number,
       watched: data.watched
     })
+  },
+  CommentSchema: (data) => {
+    return new CommentSchema({
+      user_id: data.user_id,
+      imdb_id: data.imdb_id,
+      content: data.content,
+      date_time: data.date_time,
+      edited: data.edited,
+      edited_date_time: data.edited_date_time,
+      isDeleted: data.isDeleted
+    })
+  },
+  CommentLikesSchema: (data) => {
+    return new CommentLikesSchema({
+      comment_id: data.comment_id,
+      user_id: data.user_id,
+      like: data.like,
+      dislike: data.dislike
+    })
   }
 }

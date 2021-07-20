@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const commentLikes = new mongoose.Schema({
+const commentLikesSchema = new mongoose.Schema({
   comment_id: {
     type: String,
     required: true,
@@ -22,4 +22,4 @@ const commentLikes = new mongoose.Schema({
 })
 
 
-export default mongoose.model('CommentLikesSchema', commentLikes);
+export default mongoose.model('CommentLikesSchema', commentLikesSchema);
