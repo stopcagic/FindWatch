@@ -19,11 +19,11 @@ import possibleFilters from './Models/possibleFilters';
 import connect from "./db/index"
 import register from "./User/register";
 import login from "./User/login";
-import movieUserData from "./db/db_data/movieUserData";
-import userSeasonData from "./db/db_data/userSeasonData";
-import userEpisodeData from "./db/db_data/userEpisodeData";
-import userCommentsData from "./db/db_data/userCommentData";
-import userCommentLikes from "./db/db_data/userCommentLikes";
+import movieUserData from "./userData/movieUserData";
+import userSeasonData from "./userData/userSeasonData";
+import userEpisodeData from "./userData/userEpisodeData";
+import userCommentsData from "./userData/userCommentData";
+import userCommentLikes from "./userData/userCommentLikes";
 
 dotenv.config();
 
@@ -64,22 +64,17 @@ app.get('/info', [tokenVerify], async (req, res) => {
   let name = req.query.name;
   let IMDbId = req.query.id;
 
-  let filters = req.query.filters
-  filters = filters.split(",");
+  let queryFilters = req.query.filters.split(",");
 
-  let queryFilters = allFilters.map(x => {
-    if (filters.includes(x)) return x;
-  })
-
-  queryFilters = queryFilters.filter(x => x != null).join(",");
+  let orderedFilters = allFilters.filter(x => queryFilters.includes(x)).join(",")
 
   if (IMDbId != undefined) {
-    data = await Utils.fetchInfo(IMDbId, queryFilters);
+    data = await Utils.fetchInfo(IMDbId, orderedFilters);
   }
   else if (name) {
     IMDbId = await Utils.fetchID(name);
 
-    data = await Utils.fetchInfo(IMDbId, queryFilters);
+    data = await Utils.fetchInfo(IMDbId, orderedFilters);
   }
   else {
     res.status(400).send()
