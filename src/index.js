@@ -19,11 +19,13 @@ import possibleFilters from './Models/possibleFilters';
 import connect from "./db/index"
 import register from "./User/register";
 import login from "./User/login";
-import movieUserData from "./userData/movieUserData";
-import userSeasonData from "./userData/userSeasonData";
-import userEpisodeData from "./userData/userEpisodeData";
-import userCommentsData from "./userData/userCommentData";
-import userCommentLikes from "./userData/userCommentLikes";
+import getMovieUserData from "./UserData/GetUserData/movieUserData";
+import getUserSeasonData from "./UserData/GetUserData/userSeasonData";
+import getUserEpisodeData from "./UserData/GetUserData/userEpisodeData";
+import getUserCommentsData from "./UserData/GetUserData/userCommentData";
+import getUserCommentLikes from "./UserData/GetUserData/userCommentLikes";
+import postMovieUserData from "./UserData/PostUserData/movieUserData"
+
 
 dotenv.config();
 
@@ -134,10 +136,12 @@ app.use("/series", [tokenVerify], mostPopularTVSeries)
 app.use("/user", register)
 app.use("/user", login)
 
-app.use("/data", [tokenVerify], movieUserData)
-app.use("/data", [tokenVerify], userSeasonData)
-app.use("/data", [tokenVerify], userEpisodeData)
-app.use("/data", [tokenVerify], userCommentsData)
-app.use("/data", [tokenVerify], userCommentLikes)
+app.use("/data", [tokenVerify], getMovieUserData)
+app.use("/data", [tokenVerify], getUserSeasonData)
+app.use("/data", [tokenVerify], getUserEpisodeData)
+app.use("/data", [tokenVerify], getUserCommentsData)
+app.use("/data", [tokenVerify], getUserCommentLikes)
+
+app.use("/data", [tokenVerify], postMovieUserData)
 
 app.listen(port, () => console.log(`http://localhost:${port}`))

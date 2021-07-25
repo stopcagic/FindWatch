@@ -5,8 +5,7 @@ import mongoose from "mongoose";
 const movieUserSchema = new mongoose.Schema({
   imdb_id: {
     type: String,
-    required: true,
-    default: ""
+    required: true
   },
   like: {
     type: Boolean,
@@ -34,8 +33,7 @@ const movieUserSchema = new mongoose.Schema({
   },
   user_id: {
     type: ObjectId,
-    required: true,
-    default: 0
+    required: true
   }
 })
 

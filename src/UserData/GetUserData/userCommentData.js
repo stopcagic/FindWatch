@@ -1,5 +1,5 @@
 import express from "express";
-import GetUserCommentData from "../db/db_data/userCommentData"
+import GetUserCommentData from "../../db/db_data/GetUserCommentData"
 
 const router = express.Router();
 

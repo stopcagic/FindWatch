@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import connect from "../db/index"
-import { loginValidation } from "../Utils/validate"
+import { loginValidation } from "../Utils/userValidation"
 
 dotenv.config();
 

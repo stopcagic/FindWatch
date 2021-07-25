@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs"
-import { registrationValidation } from "../Utils/validate"
+import { registrationValidation } from "../Utils/userValidation"
 import connect from "../db/index"
 import createSchemas from "../Utils/createSchemas"
 
@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, salt)
 
     const user = createSchemas.CreateNewUserSchema(req, hashPassword)
-    const savedUser = await db.collection("users").insertOne(user);
+    await db.collection("users").insertOne(user);
 
     res.json({
       username: user.username,

@@ -1,5 +1,5 @@
-import registrationSchema from "../Models/registerModel"
-import loginSchema from "../Models/loginModel"
+import registrationSchema from "../Models/ValidationModels/registerModel"
+import loginSchema from "../Models/ValidationModels/loginModel"
 
 const registrationValidation = data => {
   const schema = registrationSchema

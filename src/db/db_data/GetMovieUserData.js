@@ -10,10 +10,10 @@ export default async data => {
     let db = await connect();
 
     let response = await db.collection("movie_user_data").findOne({ user_id: ObjectId(data.userId), imdb_id: data.imdbId })
-    console.log(response);
+
     if (response == null) return {};
 
-    return createSchemas.MovieUserSchema(response)
+    return createSchemas.MovieUserSchema(response, false)
 
   } catch (error) {
     console.log(error);

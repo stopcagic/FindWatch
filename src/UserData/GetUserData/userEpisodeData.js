@@ -1,13 +1,12 @@
 import express from "express";
-import GetUserCommentLikes from "../db/db_data/userCommentLikes"
+import GetUserEpisodeData from "../../db/db_data/GetUserEpisodeData"
 
 const router = express.Router();
 
-router.get("/userCommentLikes", async (req, res) => {
-
+router.get("/userEpisodeData", async (req, res) => {
   const data = req.query;
   try {
-    const response = await GetUserCommentLikes(data);
+    const response = await GetUserEpisodeData(data);
     if (response == null) return res.status(422).send("Data cannot be empty.");
     if (response == {}) return res.status(200);
 
@@ -17,8 +16,8 @@ router.get("/userCommentLikes", async (req, res) => {
     res.status(500).send(error)
   }
 
-})
 
+})
 
 
 export default router

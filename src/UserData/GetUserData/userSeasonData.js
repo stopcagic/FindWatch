@@ -1,5 +1,5 @@
 import express from "express";
-import GetUserSeasonData from "../db/db_data/userSeasonData"
+import GetUserSeasonData from "../../db/db_data/GetUserSeasonData"
 
 const router = express.Router();
 

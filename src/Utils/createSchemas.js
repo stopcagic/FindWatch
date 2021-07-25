@@ -16,17 +16,23 @@ export default {
       email: req.body.email
     })
   },
-  MovieUserSchema: (data) => {
-    return new MovieUserSchema({
-      imdb_id: data.imdb_id,
-      like: data.like,
-      dislike: data.dislike,
-      rating: data.rating,
-      favorite: data.favorite,
-      completed: data.completed,
-      watch_later: data.watch_later,
-      user_id: data.user_id
-    })
+  MovieUserSchema: (data, isPost) => {
+    if (isPost)
+      return new MovieUserSchema({
+        imdb_id: data.imdb_id,
+        user_id: data.user_id
+      })
+    if (!isPost)
+      return new MovieUserSchema({
+        imdb_id: data.imdb_id,
+        like: data.like,
+        dislike: data.dislike,
+        rating: data.rating,
+        favorite: data.favorite,
+        completed: data.completed,
+        watch_later: data.watch_later,
+        user_id: data.user_id
+      })
   },
   SeasonDataSchema: (data) => {
     return new SeasonDataSchema({
