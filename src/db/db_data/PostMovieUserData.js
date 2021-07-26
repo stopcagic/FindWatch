@@ -1,15 +1,20 @@
 import { ObjectId } from "mongodb"
-import { userDataValidation } from "../../Utils/userDataValidation"
+import { movieUserDataValidation } from "../../Utils/userDataValidation"
 import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
 
 
 export default async data => {
   try {
-    let error = userDataValidation(data)
+    let error = movieUserDataValidation(data)
     if (error) throw error;
 
     const db = await connect();
+
+    const userExists = await db.collection("users").findOne({ _id: ObjectId(data.userId) })
+
+    if (!userExists) throw "User does not exist.";
+
     const userDataExists = await db.collection("movie_user_data").findOne({ user_id: ObjectId(data.userId), imdb_id: data.imdbId })
 
     if (userDataExists) throw "Data for this user and movie already exists.";
@@ -22,6 +27,6 @@ export default async data => {
 
   } catch (err) {
     console.log(err);
-    throw "Something went wrong"
+    throw err
   }
 }

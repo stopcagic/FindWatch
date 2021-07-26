@@ -19,8 +19,8 @@ export default {
   MovieUserSchema: (data, isPost) => {
     if (isPost)
       return new MovieUserSchema({
-        imdb_id: data.imdb_id,
-        user_id: data.user_id
+        imdb_id: data.imdbId,
+        user_id: data.userId
       })
     if (!isPost)
       return new MovieUserSchema({
@@ -34,21 +34,37 @@ export default {
         user_id: data.user_id
       })
   },
-  SeasonDataSchema: (data) => {
-    return new SeasonDataSchema({
-      movie_user_data_id: data.movie_user_data_id,
-      user_id: data.user_id,
-      season_number: data.season_number,
-      is_completed: data.is_completed
-    })
+
+  SeasonDataSchema: (data, isPost) => {
+    if (isPost)
+      return new SeasonDataSchema({
+        movie_user_data_id: data.movieUserDataId,
+        user_id: data.userId,
+        season_number: data.seasonNumber
+      })
+    if (!isPost)
+      return new SeasonDataSchema({
+        movie_user_data_id: data.movie_user_data_id,
+        user_id: data.user_id,
+        season_number: data.season_number,
+        is_completed: data.is_completed
+      })
   },
-  EpisodeDataSchema: (data) => {
-    return new EpisodeDataSchema({
-      season_data_id: data.season_data_id,
-      episode_number: data.episode_number,
-      watched: data.watched
-    })
+
+  EpisodeDataSchema: (data, isPost) => {
+    if (isPost)
+      return new EpisodeDataSchema({
+        season_data_id: data.seasonDataId,
+        episode_number: data.episodeNumber,
+      })
+    if (!isPost)
+      return new EpisodeDataSchema({
+        season_data_id: data.season_data_id,
+        episode_number: data.episode_number,
+        watched: data.watched
+      })
   },
+
   CommentSchema: (data) => {
     return new CommentSchema({
       user_id: data.user_id,
@@ -60,6 +76,7 @@ export default {
       isDeleted: data.isDeleted
     })
   },
+
   CommentLikesSchema: (data) => {
     return new CommentLikesSchema({
       comment_id: data.comment_id,
