@@ -1,15 +1,14 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const commentLikesSchema = new mongoose.Schema({
   comment_id: {
-    type: String,
-    required: true,
-    default: 0
+    type: ObjectId,
+    required: true
   },
   user_id: {
-    type: String,
-    required: true,
-    default: ""
+    type: ObjectId,
+    required: true
   },
   like: {
     type: Boolean,

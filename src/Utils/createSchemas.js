@@ -65,24 +65,39 @@ export default {
       })
   },
 
-  CommentSchema: (data) => {
-    return new CommentSchema({
-      user_id: data.user_id,
-      imdb_id: data.imdb_id,
-      content: data.content,
-      date_time: data.date_time,
-      edited: data.edited,
-      edited_date_time: data.edited_date_time,
-      isDeleted: data.isDeleted
-    })
+  CommentSchema: (data, date, isPost) => {
+    if (isPost)
+      return new CommentSchema({
+        user_id: data.userId,
+        imdb_id: data.imdbId,
+        content: data.content,
+        date_time: date
+      })
+
+    if (!isPost)
+      return new CommentSchema({
+        user_id: data.user_id,
+        imdb_id: data.imdb_id,
+        content: data.content,
+        date_time: data.date_time,
+        edited: data.edited,
+        edited_date_time: data.edited_date_time,
+        isDeleted: data.isDeleted
+      })
   },
 
-  CommentLikesSchema: (data) => {
-    return new CommentLikesSchema({
-      comment_id: data.comment_id,
-      user_id: data.user_id,
-      like: data.like,
-      dislike: data.dislike
-    })
+  CommentLikesSchema: (data, isPost) => {
+    if (isPost)
+      return new CommentLikesSchema({
+        comment_id: data.commentId,
+        user_id: data.userId
+      })
+    if (!isPost)
+      return new CommentLikesSchema({
+        comment_id: data.comment_id,
+        user_id: data.user_id,
+        like: data.like,
+        dislike: data.dislike
+      })
   }
 }

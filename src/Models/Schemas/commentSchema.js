@@ -4,25 +4,21 @@ import mongoose from "mongoose";
 const CommentSchema = new mongoose.Schema({
   user_id: {
     type: ObjectId,
-    required: true,
-    default: ""
+    required: true
   },
   imdb_id: {
     type: String,
-    required: true,
-    default: ""
+    required: true
   },
   content: {
     type: String,
     required: true,
     max: 255,
-    min: 1,
-    default: ""
+    min: 1
   },
   date_time: {
     type: Date,
-    required: true,
-    default: new Date()
+    required: true
   },
   edited: {
     type: Boolean,
@@ -30,7 +26,6 @@ const CommentSchema = new mongoose.Schema({
   },
   edited_date_time: {
     type: Date,
-    required: true,
     default: null
   },
   isDeleted: {

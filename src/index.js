@@ -27,6 +27,7 @@ import getUserCommentLikes from "./UserData/GetUserData/userCommentLikes";
 import postMovieUserData from "./UserData/PostUserData/movieUserData"
 import postUserSeasonData from "./UserData/PostUserData/userSeasonData"
 import postUserEpisodeData from "./UserData/PostUserData/userEpisodeData"
+import postUserCommentData from "./UserData/PostUserData/userCommentData"
 
 dotenv.config();
 
@@ -146,6 +147,7 @@ app.use("/data", [tokenVerify], getUserCommentLikes)
 app.use("/data", [tokenVerify], postMovieUserData)
 app.use("/data", [tokenVerify], postUserSeasonData)
 app.use("/data", [tokenVerify], postUserEpisodeData)
+app.use("/data", [tokenVerify], postUserCommentData)
 
 
 app.listen(port, () => console.log(`http://localhost:${port}`))
