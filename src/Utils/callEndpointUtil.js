@@ -17,7 +17,7 @@ const Utils = {
     return SeriesTitle.data.results[0].id;
   },
   async fetchInfo(IMDbId, queryFilters) {
-    let request = await axios.get(`https://imdb-api.com/en/API/Title/${APikey}/${IMDbId}/${queryFilters}`);
+    let request = await axios.get(`${imdbBaseUrl}/Title/${APikey}/${IMDbId}/${queryFilters}`);
 
     return request.data;
   }

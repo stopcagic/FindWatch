@@ -26,6 +26,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT
 const APikey = process.env.APikey
+const imdbBaseUrl = process.env.imdbApiUrl
 
 app.use(express.json());
 
@@ -47,7 +48,7 @@ app.get('/', async (_, res) => {
 app.get('/search', [tokenVerify], async (req, res) => {
 
   let word = req.query.expression;
-  let request = await axios.get(`https://imdb-api.com/en/API/SearchAll/${APikey}/${word}`);
+  let request = await axios.get(`${imdbBaseUrl}/SearchAll/${APikey}/${word}`);
   let data = request.data;
 
   res.json(data);

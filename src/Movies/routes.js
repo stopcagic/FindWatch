@@ -53,6 +53,14 @@ router.get("/top250/", async (req, res) => {
     res.status(400).json(error)
   }
 })
+router.get("/boxOffice/:time", async (req, res) => {
+  try {
+    const data = await fetch.BoxOffice(req.params.time);
 
+    res.json(data)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
 
 export default router
