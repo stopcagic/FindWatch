@@ -55,29 +55,36 @@ app.get('/search', [tokenVerify], async (req, res) => {
 })
 
 app.get('/info', [tokenVerify], async (req, res) => {
+  try {
+    let data;
+    let allFilters = possibleFilters
+    let name = req.query.name;
+    let IMDbId = req.query.id;
 
-  let data;
-  let allFilters = possibleFilters
-  let name = req.query.name;
-  let IMDbId = req.query.id;
+    let queryFilters = req.query.filters.split(",");
 
-  let queryFilters = req.query.filters.split(",");
+    let orderedFilters = allFilters.filter(x => queryFilters.includes(x)).join(",")
 
-  let orderedFilters = allFilters.filter(x => queryFilters.includes(x)).join(",")
 
-  if (IMDbId != undefined) {
-    data = await Utils.fetchInfo(IMDbId, orderedFilters);
+    let imdbId;
+    if (name) {
+      imdbId = await Utils.fetchID(name);
+    }
+    if (IMDbId) {
+      imdbId = IMDbId
+    }
+    else {
+      throw "Title does not exist or incorrect IMDB ID."
+    }
+
+    data = await Utils.fetchInfo(imdbId, orderedFilters);
+
+    res.json(data);
+  } catch (error) {
+    res.status(400).send(error)
   }
-  else if (name) {
-    IMDbId = await Utils.fetchID(name);
 
-    data = await Utils.fetchInfo(IMDbId, orderedFilters);
-  }
-  else {
-    res.status(400).send()
-  }
 
-  res.json(data);
 })
 
 app.use("/movies", MovieRouter);
