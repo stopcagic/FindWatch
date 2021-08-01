@@ -12,6 +12,7 @@ router.get("/mostPopular/", async (req, res) => {
     res.status(400).json(error)
   }
 })
+
 router.get("/episodes/:ime", async (req, res) => {
   try {
     if (req.params.ime == undefined) throw "Episode name is required."
@@ -22,6 +23,7 @@ router.get("/episodes/:ime", async (req, res) => {
     res.status(400).json(error)
   }
 })
+
 router.get("/seasonEpisodes", async (req, res) => {
   try {
     let name = req.query.name;
@@ -34,6 +36,7 @@ router.get("/seasonEpisodes", async (req, res) => {
     res.status(400).json(error)
   }
 })
+
 router.get("/name/:ime", async (req, res) => {
   try {
     if (req.params.ime == undefined) throw "Episode name is required."
@@ -44,6 +47,7 @@ router.get("/name/:ime", async (req, res) => {
     res.status(400).json(error)
   }
 })
+
 router.get("/top250TVs", async (req, res) => {
   try {
     const data = await fetch.Top250Shows();
