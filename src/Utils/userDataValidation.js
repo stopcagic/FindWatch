@@ -9,7 +9,7 @@ const movieUserDataValidation = data => {
 
   const { error } = schema.validate({
     user_id: data.userId,
-    imdb_id: data.imdbId
+    jw_id: data.jwId
   })
   if (error)
     return error.details[0].message;
@@ -43,7 +43,7 @@ const commentDataValidation = (data, date) => {
 
   const { error } = schema.validate({
     user_id: data.userId,
-    imdb_id: data.imdbId,
+    jw_id: data.jwId,
     content: data.content,
     date_time: date
   })

@@ -15,7 +15,7 @@ export default async data => {
 
     if (!userExists) throw "User does not exist.";
 
-    const userDataExists = await db.collection("movie_user_data").findOne({ user_id: ObjectId(data.userId), imdb_id: data.imdbId })
+    const userDataExists = await db.collection("movie_user_data").findOne({ user_id: ObjectId(data.userId), jw_id: data.jwId })
 
     if (userDataExists) throw "Data for this user and movie already exists.";
 

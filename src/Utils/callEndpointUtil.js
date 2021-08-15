@@ -1,12 +1,17 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import genres from "../Models/genre_ids"
 
 dotenv.config();
 const APikey = process.env.APikey
 const imdbBaseUrl = process.env.IMDBAPIURL
 const jwBaseUrl = process.env.JWAPIURL
-// const jwPosterUrl = process.env.JWPOSTERURL
-// const jwUserCode = process.env.JWUSERPROFILECODE
+const jwPosterUrl = process.env.JWPOSTERURL
+const jwUserCode = process.env.JWUSERPROFILECODE
+
+
+const generatePosterUrl = (id) => jwPosterUrl + id.replace('{profile}', jwUserCode)
+
 
 const Utils = {
 
@@ -18,7 +23,7 @@ const Utils = {
   async justWatchAPIfetchData(params, body) {
 
     let request = await axios.post(`${jwBaseUrl}${params}`, JSON.stringify(body));
-    //map svaki od data.items => item.poster = (pozovi image url)
+    request.data.items.forEach(el => el.poster = generatePosterUrl(el.poster));
     return request.data
   },
 
@@ -36,7 +41,13 @@ const Utils = {
 
   async fetchJWInfo(type, jw_id) {
     let request = await axios.get(`${jwBaseUrl}/${type}/${jw_id}/locale/en_US`);
-    //map svaki od properties => poster = (pozovi image url)
+    request.data.poster = generatePosterUrl(request.data.poster)
+    let genreList = []
+    request.data.genre_ids.map(x => genreList.push({
+      short_name: genres[x].short_name,
+      full_name: genres[x].translation
+    }))
+    request.data.genres = genreList
     return request.data;
   }
 }

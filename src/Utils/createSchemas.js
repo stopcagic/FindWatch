@@ -19,12 +19,12 @@ export default {
   MovieUserSchema: (data, isPost) => {
     if (isPost)
       return new MovieUserSchema({
-        imdb_id: data.imdbId,
+        jw_id: data.jwId,
         user_id: data.userId
       })
     if (!isPost)
       return new MovieUserSchema({
-        imdb_id: data.imdb_id,
+        jw_id: data.jw_id,
         like: data.like,
         dislike: data.dislike,
         rating: data.rating,
@@ -69,7 +69,7 @@ export default {
     if (isPost)
       return new CommentSchema({
         user_id: data.userId,
-        imdb_id: data.imdbId,
+        jw_id: data.jwId,
         content: data.content,
         date_time: date
       })
@@ -77,7 +77,7 @@ export default {
     if (!isPost)
       return new CommentSchema({
         user_id: data.user_id,
-        imdb_id: data.imdb_id,
+        jw_id: data.jw_id,
         content: data.content,
         date_time: data.date_time,
         edited: data.edited,

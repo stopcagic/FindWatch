@@ -4,7 +4,7 @@ export default Joi.object({
   user_id: Joi.string()
     .alphanum()
     .required(),
-  imdb_id: Joi.string()
+  jw_id: Joi.string()
     .alphanum()
     .required()
 })

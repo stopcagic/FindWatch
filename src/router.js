@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import Utils from "./Utils/callEndpointUtil"
 import tokenVerify from "./Utils/tokenVerify"
 import possibleFilters from './Models/possibleFilters';
+import filter from "./Utils/filterHelper"
+import fetchJwId from "./Utils/imdbIdToJwId"
 
 const router = express.Router();
 dotenv.config();
@@ -52,14 +54,17 @@ router.get('/info', [tokenVerify], async (req, res) => {
   }
 })
 
-router.get('/jw_info', [tokenVerify], async (req, res) => {
+router.post('/jw_info', [tokenVerify], async (req, res) => {
   try {
-    const type = req.query.type;
-    const jw_id = req.query.jw_id;
+    const type = req.body.type;
+    const jw_id = req.body.jw_id;
+    const imdb_id = req.body.imdb_id
+    let id = jw_id
+    if (type == undefined) throw "Missing type."
+    if (id == undefined && imdb_id != undefined) id = await fetchJwId(type, imdb_id)
+    if (id == 0) throw "Unable to resolve id"
 
-    if (type == undefined && jw_id == undefined) throw "Missing type or id."
-
-    const data = await Utils.fetchJWInfo(type, jw_id)
+    const data = await Utils.fetchJWInfo(type, id)
 
     res.json(data);
 
@@ -69,43 +74,26 @@ router.get('/jw_info', [tokenVerify], async (req, res) => {
 })
 router.post('/filter', [tokenVerify], async (req, res) => {
   try {
-    const options = req.body
-    if (options == undefined) throw "Body cannot be empty."
 
-    const body = {
-      "age_certifications": null,
-      "content_types": null,
-      "presentation_types": null,
-      "providers": null,
-      "genres": null,
-      "languages": null,
-      "release_year_from": null,
-      "release_year_until": null,
-      "monetization_types": null,
-      "min_price": null,
-      "max_price": null,
-      "scoring_filter_types": null,
-      "cinema_release": null,
-      "query": null,
-      "page": null,
-      "page_size": null
-    };
-    const paramKeys = Object.keys(body);
+    const body = req.body;
 
-    for (const key in options) {
-      if (paramKeys.indexOf(key) === -1) {
-        throw "invalid option '" + key + "'";
-      }
-      else {
-        body[key] = options[key];
-      }
+    if (body == undefined) throw "Body cannot be empty."
+
+    const options = {
+      content_types: [body.type],
+      genres: body?.genres,
+      scoring_filter_types: { "imdb:score": { min_scoring_value: body?.rating?.min, max_scoring_value: body?.rating?.max } },
+      release_year_from: body?.releaseYear?.from,
+      release_year_until: body?.releaseYear?.to
     }
-    const data = await Utils.justWatchAPIfetchData(`/en_US/popular`, body)
+
+    const requestBody = filter(options)
+    const data = await Utils.justWatchAPIfetchData(`/en_US/popular`, requestBody)
 
     res.send(data)
   }
   catch (error) {
-    res.status(400).send(error)
+    res.status(400).send(error.message)
   }
 
 })

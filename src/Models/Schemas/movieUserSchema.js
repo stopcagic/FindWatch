@@ -3,7 +3,7 @@ import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
 
 const movieUserSchema = new mongoose.Schema({
-  imdb_id: {
+  jw_id: {
     type: String,
     required: true
   },
