@@ -19,14 +19,13 @@ export default async data => {
 
     if (userDataExists) throw "Data for this user and movie already exists.";
 
-    const movieUserData = createSchemas.MovieUserSchema(data, true)
+    const movieUserData = createSchemas.MovieUserSchema(null, data, true)
 
     const result = await db.collection("movie_user_data").insertOne(movieUserData);
 
     return result;
 
   } catch (err) {
-    console.log(err);
     throw err
   }
 }

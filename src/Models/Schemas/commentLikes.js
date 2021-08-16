@@ -18,7 +18,7 @@ const commentLikesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
-})
+}, { _id: false })
 
 
 export default mongoose.model('CommentLikesSchema', commentLikesSchema);

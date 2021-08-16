@@ -44,8 +44,7 @@ const commentDataValidation = (data, date) => {
   const { error } = schema.validate({
     user_id: data.userId,
     jw_id: data.jwId,
-    content: data.content,
-    date_time: date
+    content: data.content
   })
   if (error)
     return error.details[0].message;

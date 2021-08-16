@@ -23,7 +23,7 @@ export default async data => {
 
     if (seasonExists) throw "This user already has data for this season.";
 
-    const userSeasonData = createSchemas.SeasonDataSchema(data, true)
+    const userSeasonData = createSchemas.SeasonDataSchema(null, data, true)
 
     const result = await db.collection("season_data").insertOne(userSeasonData);
 

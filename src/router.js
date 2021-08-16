@@ -10,18 +10,18 @@ import fetchJwId from "./Utils/imdbIdToJwId"
 const router = express.Router();
 dotenv.config();
 
-const APikey = process.env.APikey
-
 router.get('/', async (_, res) => {
   res.send("Welcome to FindWatch")
 })
 
 router.get('/search', [tokenVerify], async (req, res) => {
-
   let word = req.query.expression;
-  let data = await Utils.imdbAPIfetchData(`/SearchAll/${APikey}/${word}`);
 
-  res.json(data);
+  const requestBody = filter({ query: word })
+
+  const { items } = await Utils.justWatchAPIfetchData(`/en_US/popular`, requestBody)
+
+  res.json(items);
 })
 
 router.get('/info', [tokenVerify], async (req, res) => {

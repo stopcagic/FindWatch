@@ -17,7 +17,6 @@ export default async data => {
 
   } catch (error) {
 
-    console.log(error);
     throw "Something went wrong"
   }
 }

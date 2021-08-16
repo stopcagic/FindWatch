@@ -35,7 +35,7 @@ const movieUserSchema = new mongoose.Schema({
     type: ObjectId,
     required: true
   }
-})
+}, { _id: false })
 
 
 export default mongoose.model('MovieUserSchema', movieUserSchema);

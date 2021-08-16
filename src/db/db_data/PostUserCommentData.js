@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+
 import { commentDataValidation } from "../../Utils/userDataValidation"
 import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
@@ -6,9 +7,7 @@ import createSchemas from "../../Utils/createSchemas"
 
 export default async data => {
   try {
-    let date = new Date();
-
-    let error = commentDataValidation(data, date)
+    let error = commentDataValidation(data)
     if (error) throw error;
 
     const db = await connect();
@@ -17,11 +16,16 @@ export default async data => {
 
     if (!userExists) throw "User does not exist.";
 
-    const userComment = createSchemas.CommentSchema(data, date, true)
+    const userComment = createSchemas.CommentSchema(null, data, true)
 
-    const result = await db.collection("comments").insertOne(userComment);
+    await db.collection("comments").insertOne(userComment);
 
-    return result;
+    const cursor = await db.collection("comments").find({ jw_id: data.jwId, user_id: ObjectId(data.userId) })
+
+    const commentExists = await cursor.toArray()
+    if (commentExists.length == 0) throw "Comment does not exist.";
+
+    return { comment_id: await commentExists[commentExists.length - 1]._id };
 
   } catch (err) {
     console.log(err);

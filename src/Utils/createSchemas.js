@@ -16,88 +16,92 @@ export default {
       email: req.body.email
     })
   },
-  MovieUserSchema: (data, isPost) => {
-    if (isPost)
+  MovieUserSchema: (oldDoc, data = null, isPost = false) => {
+    if (isPost == true)
       return new MovieUserSchema({
         jw_id: data.jwId,
         user_id: data.userId
       })
-    if (!isPost)
+    if (isPost == false) {
+
       return new MovieUserSchema({
-        jw_id: data.jw_id,
-        like: data.like,
-        dislike: data.dislike,
-        rating: data.rating,
-        favorite: data.favorite,
-        completed: data.completed,
-        watch_later: data.watch_later,
-        user_id: data.user_id
+        jw_id: oldDoc.jw_id,
+        like: data?.like != null ? data.like : oldDoc.like,
+        dislike: data?.dislike != null ? data.dislike : oldDoc.dislike,
+        rating: data?.rating != null ? data.rating : oldDoc.rating,
+        favorite: data?.favorite != null ? data.favorite : oldDoc.favorite,
+        completed: data?.completed != null ? data.completed : oldDoc.completed,
+        watch_later: data?.watch_later != null ? data.watch_later : oldDoc.watch_later,
+        user_id: oldDoc.user_id
       })
+    }
   },
 
-  SeasonDataSchema: (data, isPost) => {
-    if (isPost)
+  SeasonDataSchema: (oldDoc, data = null, isPost = false) => {
+    if (isPost == true)
       return new SeasonDataSchema({
         movie_user_data_id: data.movieUserDataId,
         user_id: data.userId,
         season_number: data.seasonNumber
       })
-    if (!isPost)
+    if (isPost == false) {
+
       return new SeasonDataSchema({
-        movie_user_data_id: data.movie_user_data_id,
-        user_id: data.user_id,
-        season_number: data.season_number,
-        is_completed: data.is_completed
+        movie_user_data_id: oldDoc.movie_user_data_id,
+        user_id: oldDoc.user_id,
+        season_number: data?.season_number != null ? data.season_number : oldDoc.season_number,
+        is_completed: data?.is_completed != null ? data.is_completed : oldDoc.is_completed
       })
+    }
   },
 
-  EpisodeDataSchema: (data, isPost) => {
-    if (isPost)
+  EpisodeDataSchema: (oldDoc, data = null, isPost = false) => {
+    if (isPost == true)
       return new EpisodeDataSchema({
         season_data_id: data.seasonDataId,
         episode_number: data.episodeNumber,
       })
-    if (!isPost)
+    if (isPost == false)
       return new EpisodeDataSchema({
-        season_data_id: data.season_data_id,
-        episode_number: data.episode_number,
-        watched: data.watched
+        season_data_id: oldDoc.season_data_id,
+        episode_number: data?.episode_number != null ? data.episode_number : oldDoc.episodeNumber,
+        watched: data?.watched != null ? data.watched : oldDoc.watched
       })
   },
 
-  CommentSchema: (data, date, isPost) => {
-    if (isPost)
+  CommentSchema: (oldDoc, data = null, isPost = false) => {
+    if (isPost == true)
       return new CommentSchema({
         user_id: data.userId,
         jw_id: data.jwId,
         content: data.content,
-        date_time: date
+        date_time: new Date()
       })
 
-    if (!isPost)
+    if (isPost == false)
       return new CommentSchema({
-        user_id: data.user_id,
-        jw_id: data.jw_id,
-        content: data.content,
-        date_time: data.date_time,
-        edited: data.edited,
-        edited_date_time: data.edited_date_time,
-        isDeleted: data.isDeleted
+        user_id: oldDoc.user_id,
+        jw_id: oldDoc.jw_id,
+        content: data?.content != null ? data.content : oldDoc.content,
+        date_time: oldDoc.date_time,
+        edited: data != null ? true : oldDoc.edited,
+        edited_date_time: data != null ? new Date() : oldDoc.edited_date_time,
+        isDeleted: data?.isDeleted != null ? data.isDeleted : oldDoc.isDeleted
       })
   },
 
-  CommentLikesSchema: (data, isPost) => {
-    if (isPost)
+  CommentLikesSchema: (oldDoc, data = null, isPost = false) => {
+    if (isPost == true)
       return new CommentLikesSchema({
         comment_id: data.commentId,
         user_id: data.userId
       })
-    if (!isPost)
+    if (isPost == false)
       return new CommentLikesSchema({
-        comment_id: data.comment_id,
-        user_id: data.user_id,
-        like: data.like,
-        dislike: data.dislike
+        comment_id: oldDoc.comment_id,
+        user_id: oldDoc.user_id,
+        like: data?.like != null ? data.like : oldDoc.like,
+        dislike: data?.dislike != null ? data.dislike : oldDoc.dislike
       })
   }
 }

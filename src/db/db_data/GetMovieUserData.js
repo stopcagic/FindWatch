@@ -13,7 +13,7 @@ export default async data => {
 
     if (response == null) return {};
 
-    return createSchemas.MovieUserSchema(response, false)
+    return createSchemas.MovieUserSchema(response)
 
   } catch (error) {
     console.log(error);

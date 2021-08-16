@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     requred: true,
     default: false
   }
-})
+}, { _id: false })
 
 
 export default mongoose.model('User', userSchema);

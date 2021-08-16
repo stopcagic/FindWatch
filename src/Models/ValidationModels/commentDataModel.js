@@ -10,7 +10,5 @@ export default Joi.object({
   content: Joi.string()
     .min(1)
     .max(255)
-    .required(),
-  date_time: Joi.date()
-    .required(),
+    .required()
 })

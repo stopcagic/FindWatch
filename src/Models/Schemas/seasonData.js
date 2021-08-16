@@ -19,7 +19,7 @@ const seasonData = new mongoose.Schema({
     type: ObjectId,
     required: true
   },
-})
+}, { _id: false })
 
 
 export default mongoose.model('SeasonData', seasonData);

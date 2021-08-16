@@ -19,7 +19,7 @@ export default async data => {
 
     if (episodeExists) throw "This user already has data for this episode.";
 
-    const userEpisodeData = createSchemas.EpisodeDataSchema(data, true)
+    const userEpisodeData = createSchemas.EpisodeDataSchema(null, data, true)
 
     const result = await db.collection("episode_data").insertOne(userEpisodeData);
 
