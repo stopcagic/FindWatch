@@ -6,5 +6,10 @@ export default Joi.object({
     .required(),
   jw_id: Joi.string()
     .alphanum()
+    .required(),
+  genres: Joi.array()
+    .required(),
+  type: Joi.string()
+    .alphanum()
     .required()
 })

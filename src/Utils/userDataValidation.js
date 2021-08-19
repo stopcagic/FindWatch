@@ -9,7 +9,9 @@ const movieUserDataValidation = data => {
 
   const { error } = schema.validate({
     user_id: data.userId,
-    jw_id: data.jwId
+    jw_id: data.jwId,
+    genres: data.genres,
+    type: data.type
   })
   if (error)
     return error.details[0].message;
@@ -21,6 +23,7 @@ const seasonDataValidation = data => {
   const { error } = schema.validate({
     user_id: data.userId,
     movie_user_data_id: data.movieUserDataId,
+    season_jw_id: data.seasonJwId,
     season_number: data.seasonNumber
   })
   if (error)

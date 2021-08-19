@@ -25,7 +25,7 @@ export default async data => {
     const commentExists = await cursor.toArray()
     if (commentExists.length == 0) throw "Comment does not exist.";
 
-    return { comment_id: await commentExists[commentExists.length - 1]._id };
+    return { comment_id: commentExists[commentExists.length - 1]._id };
 
   } catch (err) {
     console.log(err);

@@ -1,6 +1,5 @@
 import express from "express";
 import GetUserEpisodeData from "../db/db_data/GetUserEpisodeData"
-import PostUserEpisodeData from "../db/db_data/PostUserEpisodeData"
 import PatchUserEpisodeData from "../db/db_data/PatchUserEpisodeData"
 
 const router = express.Router();
@@ -19,26 +18,14 @@ router.get("/userEpisodeData", async (req, res) => {
   }
 })
 
-router.post("/userEpisodeData", async (req, res) => {
-
-  const data = req.body;
-  try {
-    const response = await PostUserEpisodeData(data)
-
-    res.json({ "insertedId": response.ops[0]._id })
-
-  } catch (err) {
-    res.status(400).send(err)
-  }
-})
-
-router.patch("/userEpisodeData/:seasondataid", async (req, res) => {
+router.patch("/userEpisodeData/:seasondataid/:number", async (req, res) => {
 
   const seasonDataId = req.params.seasondataid
+  const episodeNumber = req.params.number
   const data = req.body;
 
   try {
-    await PatchUserEpisodeData(seasonDataId, data)
+    await PatchUserEpisodeData(seasonDataId, episodeNumber, data)
 
     res.json({ "success": true })
   } catch (err) {

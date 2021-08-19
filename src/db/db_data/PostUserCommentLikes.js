@@ -18,7 +18,7 @@ export default async data => {
     if (!commentExists) throw "Comment does not exist.";
 
     const commentLikesExists = await db.collection("comment_likes").findOne({ comment_id: ObjectId(data.commentId), user_id: ObjectId(data.userId) })
-    if (commentLikesExists) throw "Comment likes already exits for this comment id.";
+    if (commentLikesExists) throw "Comment likes already exits for this user id.";
 
     const userCommentLikes = createSchemas.CommentLikesSchema(null, data, true)
 

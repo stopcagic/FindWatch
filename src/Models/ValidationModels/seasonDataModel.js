@@ -7,6 +7,8 @@ export default Joi.object({
   movie_user_data_id: Joi.string()
     .alphanum()
     .required(),
+  season_jw_id: Joi.number()
+    .required(),
   season_number: Joi.number()
     .positive()
     .required()

@@ -7,6 +7,14 @@ const movieUserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  genres: {
+    type: Array,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true
+  },
   like: {
     type: Boolean,
     default: false
@@ -31,11 +39,16 @@ const movieUserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  release_year: {
+    type: Date,
+    required: true
+  },
   user_id: {
     type: ObjectId,
     required: true
   }
-}, { _id: false })
+}
+)
 
 
 export default mongoose.model('MovieUserSchema', movieUserSchema);

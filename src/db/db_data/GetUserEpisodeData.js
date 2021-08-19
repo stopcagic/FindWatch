@@ -9,11 +9,15 @@ export default async data => {
   try {
     let db = await connect();
 
-    let response = await db.collection("episode_data").findOne({ season_data_id: ObjectId(data.seasonDataId) })
+    const cursor = await db.collection("episode_data").find({ season_data_id: ObjectId(data.seasonDataId) })
 
-    if (response == null) return {}
+    const response = await cursor.toArray()
 
-    return createSchemas.EpisodeDataSchema(response);
+    const schemas = response.map(x => createSchemas.EpisodeDataSchema(x))
+    if (response.length == 0)
+      return {}
+
+    return schemas
 
   } catch (error) {
     console.log(error);

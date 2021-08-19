@@ -21,10 +21,11 @@ export default async data => {
 
     const movieUserData = createSchemas.MovieUserSchema(null, data, true)
 
-    const result = await db.collection("movie_user_data").insertOne(movieUserData);
+    await db.collection("movie_user_data").insertOne(movieUserData);
 
-    return result;
+    const result = await db.collection("movie_user_data").findOne({ user_id: ObjectId(data.userId), jw_id: data.jwId })
 
+    return { movie_user_data_id: result._id };
   } catch (err) {
     throw err
   }

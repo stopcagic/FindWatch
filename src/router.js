@@ -6,6 +6,7 @@ import tokenVerify from "./Utils/tokenVerify"
 import possibleFilters from './Models/possibleFilters';
 import filter from "./Utils/filterHelper"
 import fetchJwId from "./Utils/imdbIdToJwId"
+import GetUserData from "./db/db_data/CreateData/GetUserData";
 
 const router = express.Router();
 dotenv.config();
@@ -54,17 +55,22 @@ router.get('/info', [tokenVerify], async (req, res) => {
   }
 })
 
-router.post('/jw_info', [tokenVerify], async (req, res) => {
+router.get('/jw_info', [tokenVerify], async (req, res) => {
   try {
-    const type = req.body.type;
-    const jw_id = req.body.jw_id;
-    const imdb_id = req.body.imdb_id
+    const type = req.query.type;
+    const jw_id = req.query.jw_id;
+    const imdb_id = req.query.imdb_id
+    const user_id = req.query.user_id
+
     let id = jw_id
     if (type == undefined) throw "Missing type."
     if (id == undefined && imdb_id != undefined) id = await fetchJwId(type, imdb_id)
     if (id == 0) throw "Unable to resolve id"
 
     const data = await Utils.fetchJWInfo(type, id)
+    const userData = await GetUserData({ userId: user_id, jwId: jw_id, type: type })
+
+    data.userData = userData
 
     res.json(data);
 
@@ -72,7 +78,21 @@ router.post('/jw_info', [tokenVerify], async (req, res) => {
     res.status(400).send(error)
   }
 })
-router.post('/filter', [tokenVerify], async (req, res) => {
+
+router.get('/jw_season_info', [tokenVerify], async (req, res) => {
+  try {
+    const show_id = req.query.show_id;
+    if (show_id == undefined) throw "Unable to resolve id"
+
+    const data = await Utils.fetchJWSeasonInfo(show_id)
+
+    res.json(data);
+
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
+router.post('/filter', async (req, res) => {
   try {
 
     const body = req.body;

@@ -6,6 +6,10 @@ const seasonData = new mongoose.Schema({
     type: Number,
     required: true
   },
+  season_jw_id: {
+    type: Number,
+    required: true
+  },
   is_completed: {
     type: Boolean,
     required: true,

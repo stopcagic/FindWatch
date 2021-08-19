@@ -32,7 +32,11 @@ const CommentSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-}, { _id: false })
+  reactions: {
+    type: Array,
+    default: null
+  }
+})
 
 
 export default mongoose.model('CommentSchema', CommentSchema);

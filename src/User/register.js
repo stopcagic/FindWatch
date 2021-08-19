@@ -22,7 +22,6 @@ router.post("/register", async (req, res) => {
     const user = createSchemas.CreateNewUserSchema(req, hashPassword)
     await db.collection("users").insertOne(user);
 
-    res.json({ "insertedId": response.ops[0]._id })
 
     res.json({
       username: user.username,

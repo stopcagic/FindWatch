@@ -21,9 +21,12 @@ export default async data => {
 
     const userEpisodeData = createSchemas.EpisodeDataSchema(null, data, true)
 
-    const result = await db.collection("episode_data").insertOne(userEpisodeData);
+    await db.collection("episode_data").insertOne(userEpisodeData);
 
-    return result;
+    const episode = await db.collection("episode_data").findOne({ season_data_id: ObjectId(data.seasonDataId), episode_number: data.episodeNumber })
+    if (!episode) throw "Episode data did not create.";
+
+    return { episode_id: episode._id };
 
   } catch (err) {
     console.log(err);

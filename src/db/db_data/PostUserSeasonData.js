@@ -12,11 +12,9 @@ export default async data => {
     const db = await connect();
 
     const userExists = await db.collection("users").findOne({ _id: ObjectId(data.userId) })
-
     if (!userExists) throw "User does not exist.";
 
     const userDataExists = await db.collection("movie_user_data").findOne({ _id: ObjectId(data.movieUserDataId) })
-
     if (!userDataExists) throw "Data for this user does not exist.";
 
     const seasonExists = await db.collection("season_data").findOne({ user_id: ObjectId(data.userId), movie_user_data_id: ObjectId(data.movieUserDataId), season_number: data.seasonNumber })
@@ -25,10 +23,13 @@ export default async data => {
 
     const userSeasonData = createSchemas.SeasonDataSchema(null, data, true)
 
-    const result = await db.collection("season_data").insertOne(userSeasonData);
+    await db.collection("season_data").insertOne(userSeasonData);
 
-    return result;
+    const season = await db.collection("season_data").findOne({ user_id: ObjectId(data.userId), movie_user_data_id: ObjectId(data.movieUserDataId), season_number: data.seasonNumber })
 
+    if (!season) throw "Season data did not create.";
+
+    return { season_id: season._id };
   } catch (err) {
     console.log(err);
     throw err

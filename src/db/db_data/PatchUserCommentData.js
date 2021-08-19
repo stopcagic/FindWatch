@@ -3,27 +3,24 @@ import { diff } from 'deep-object-diff';
 
 import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
-import GetUserCommentData from "./GetUserCommentData"
 
-export default async (jwId, userId, data) => {
+export default async (commentid, data) => {
   try {
+    let db = await connect();
 
-    const oldDoc = await GetUserCommentData({ jwId, userId })
-
-    if (oldDoc == {}) throw "Invalid jwId or userId"
-
-    data.jw_id = jwId
-    data.user_id = userId
+    let oldDoc = await db.collection("comments").findOne({ _id: ObjectId(commentid) });
+    oldDoc = createSchemas.CommentSchema(oldDoc, null)
+    if (oldDoc == {}) throw "Invalid commentID"
 
     const commentData = createSchemas.CommentSchema(oldDoc, data)
 
     const changes = diff(oldDoc, commentData)._doc
+    delete changes._id
+    delete changes.reactions
     if (changes == undefined) return
 
-    let db = await connect();
-
     let result = await db.collection("comments").updateOne(
-      { jw_id: jwId, user_id: ObjectId(userId) }, { $set: changes });
+      { _id: ObjectId(commentid) }, { $set: changes });
 
     if (result.modifiedCount == 1) {
       return result

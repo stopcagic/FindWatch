@@ -48,14 +48,13 @@ router.post("/userComment", async (req, res) => {
   }
 })
 
-router.patch("/userComment/:userid/:jwid", async (req, res) => {
+router.patch("/userComment/:commentid", async (req, res) => {
 
-  const jwid = req.params.jwid
-  const userId = req.params.userid
+  const commentId = req.params.commentid
   const data = req.body;
 
   try {
-    await PatchUserCommentData(jwid, userId, data)
+    await PatchUserCommentData(commentId, data)
 
     res.json({ "success": true })
   } catch (err) {

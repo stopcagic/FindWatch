@@ -1,7 +1,5 @@
 import { ObjectId } from "mongodb";
-import connect from "../index";
-import createSchemas from '../../Utils/createSchemas';
-
+import connect from "../index"; import createSchemas from '../../Utils/createSchemas';
 
 export default async data => {
   if (data == null || data.userId == null || data.movieUserDataId == null) return null
@@ -9,12 +7,21 @@ export default async data => {
   try {
     let db = await connect();
 
-    let response = await db.collection("season_data").findOne({ user_id: ObjectId(data.userId), movie_user_data_id: ObjectId(data.movieUserDataId) })
+    const cursor = await db.collection("season_data").find({ user_id: ObjectId(data.userId), movie_user_data_id: ObjectId(data.movieUserDataId) })
+    const response = await cursor.toArray()
 
-    if (response == null)
+    if (response.length == 0)
       return {}
 
-    return createSchemas.SeasonDataSchema(response);
+    // const schemas = response.map(x => {
+    //   let id = x._id
+    //   let schema = createSchemas.SeasonDataSchema(x);
+    //   schema._id = id
+
+    //   return schema
+    // })
+
+    return response
 
   } catch (error) {
 

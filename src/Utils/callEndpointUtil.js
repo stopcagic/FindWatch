@@ -10,7 +10,7 @@ const jwPosterUrl = process.env.JWPOSTERURL
 const jwUserCode = process.env.JWUSERPROFILECODE
 
 
-const generatePosterUrl = (id) => jwPosterUrl + id.replace('{profile}', jwUserCode)
+const generatePosterUrl = (url) => jwPosterUrl + url.replace('{profile}', jwUserCode)
 
 
 const Utils = {
@@ -48,6 +48,13 @@ const Utils = {
       full_name: genres[x].translation
     }))
     request.data.genres = genreList
+    return request.data;
+  },
+
+  async fetchJWSeasonInfo(show_id) {
+    let request = await axios.get(`${jwBaseUrl}/show_season/${show_id}/locale/en_US`);
+    request.data.poster = generatePosterUrl(request.data.poster)
+
     return request.data;
   }
 }

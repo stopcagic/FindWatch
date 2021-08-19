@@ -1,8 +1,8 @@
 import express from 'express';
 
 import GetMovieUserData from "../db/db_data/GetMovieUserData"
-import PostMovieUserData from "../db/db_data/PostMovieUserData"
 import PatchMovieUserData from "../db/db_data/PatchMovieUserData"
+
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get("/userData", async (req, res) => {
     const response = await GetMovieUserData(data);
 
     if (response == null) return res.status(422).send("Data cannot be empty.")
-    if (response == {}) return res.status(200);
+    if (response == {}) return res.status(400);
 
     res.json(response)
 
@@ -24,27 +24,15 @@ router.get("/userData", async (req, res) => {
 
 })
 
-router.post("/userData", async (req, res) => {
-
-  const data = req.body;
-  try {
-    const response = await PostMovieUserData(data)
-
-    res.json({ "insertedId": response.ops[0]._id })
-
-  } catch (err) {
-    res.status(400).send(err)
-  }
-})
-
-router.patch("/userData/:userid/:jwid", async (req, res) => {
+router.patch("/userData/:userid/:jwid/:type", async (req, res) => {
 
   const jwid = req.params.jwid
   const userId = req.params.userid
+  const type = req.params.type
   const data = req.body;
 
   try {
-    await PatchMovieUserData(jwid, userId, data)
+    await PatchMovieUserData(jwid, userId, type, data)
 
     res.json({ "success": true })
   } catch (err) {
@@ -53,3 +41,5 @@ router.patch("/userData/:userid/:jwid", async (req, res) => {
 })
 
 export default router
+
+
