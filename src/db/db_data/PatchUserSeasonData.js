@@ -3,24 +3,36 @@ import { diff } from 'deep-object-diff';
 
 import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
+import Utils from "../../Utils/callEndpointUtil"
+import CreateUserData from "./CreateData/CreateUserData";
 
-export default async (userId, movieUserDataId, seasonNumber, data) => {
+export default async (userId, seasonJwId, data) => {
   try {
     let db = await connect();
-    let oldDoc = await db.collection("season_data").findOne({ user_id: ObjectId(userId), movie_user_data_id: ObjectId(movieUserDataId), season_number: parseInt(seasonNumber) })
-    oldDoc = createSchemas.SeasonDataSchema(oldDoc, null)
-    if (oldDoc == null) throw "Invalid userId or movieUserDataId"
 
-    data.user_id = userId
-    data.movie_user_data_id = movieUserDataId
+    let oldDoc = await db.collection("season_data").findOne({ user_id: ObjectId(userId), season_jw_id: parseInt(seasonJwId) })
+    oldDoc = createSchemas.SeasonDataSchema(oldDoc, null)
+
+    if (Object.keys(oldDoc).length === 0 && oldDoc.constructor === Object) {
+      try {
+        const { show_id } = await Utils.fetchJWSeasonInfo(parseInt(seasonJwId))
+        await CreateUserData({ jwId: show_id.toString(), userId: userId, type: "show" })
+
+        oldDoc = await db.collection("season_data").findOne({ user_id: ObjectId(userId), season_jw_id: parseInt(seasonJwId) })
+        oldDoc = createSchemas.SeasonDataSchema(oldDoc, null)
+
+      } catch (error) {
+        throw "Error: Failed To create user data"
+      }
+    }
 
     const seasonData = createSchemas.SeasonDataSchema(oldDoc, data)
-    console.log(typeof oldDoc, typeof seasonData);
+
     const changes = diff(oldDoc, seasonData)._doc
     if (changes == undefined) return
 
     let result = await db.collection("season_data").updateOne(
-      { user_id: ObjectId(userId), movie_user_data_id: ObjectId(movieUserDataId), season_number: parseInt(seasonNumber) }, { $set: changes });
+      { user_id: ObjectId(userId), season_jw_id: parseInt(seasonJwId) }, { $set: changes });
 
     if (result.modifiedCount == 1) {
       return result

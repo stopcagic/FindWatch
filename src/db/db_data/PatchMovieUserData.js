@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+import { diff } from 'deep-object-diff';
 
 import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
@@ -13,7 +13,7 @@ export default async (jwId, userId, type, data) => {
     if (Object.keys(oldDoc).length === 0 && oldDoc.constructor === Object) {
       try {
         await CreateUserData({ jwId: jwId, userId: userId, type: type })
-        oldDoc = await GetMovieUserData({ jwId, userId })
+        oldDoc = await GetMovieUserData({ jwId, userId, type })
 
       } catch (error) {
         throw "Error: Failed To create user data"
@@ -26,7 +26,6 @@ export default async (jwId, userId, type, data) => {
     delete changes._id
     delete changes.genres
     if (changes == undefined) return
-    console.log(changes);
     let db = await connect();
 
     let result = await db.collection("movie_user_data").updateOne(

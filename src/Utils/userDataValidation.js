@@ -35,7 +35,8 @@ const episodeDataValidation = data => {
 
   const { error } = schema.validate({
     season_data_id: data.seasonDataId,
-    episode_number: data.episodeNumber
+    episode_number: data.episodeNumber,
+    season_jw_id: data.seasonJwId
   })
   if (error)
     return error.details[0].message;

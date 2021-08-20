@@ -17,9 +17,6 @@ export default {
     })
   },
   MovieUserSchema: (oldDoc, data = null, isPost = false) => {
-
-    console.log("oldDoc", oldDoc);
-
     if (isPost == true)
       return new MovieUserSchema({
         jw_id: data.jwId,
@@ -48,6 +45,7 @@ export default {
   },
 
   SeasonDataSchema: (oldDoc, data = null, isPost = false) => {
+    if (oldDoc == null && data == null) return {}
     if (isPost == true)
       return new SeasonDataSchema({
         movie_user_data_id: data.movieUserDataId,
@@ -59,7 +57,7 @@ export default {
       return new SeasonDataSchema({
         movie_user_data_id: oldDoc.movie_user_data_id,
         user_id: oldDoc.user_id,
-        season_number: data?.season_number != null ? data.season_number : oldDoc.season_number,
+        season_number: oldDoc.season_number,
         is_completed: data?.is_completed != null ? data.is_completed : oldDoc.is_completed,
         season_jw_id: oldDoc.season_jw_id
       })
@@ -67,20 +65,24 @@ export default {
   },
 
   EpisodeDataSchema: (oldDoc, data = null, isPost = false) => {
+    if (oldDoc == null && data == null) return {}
     if (isPost == true)
       return new EpisodeDataSchema({
         season_data_id: data.seasonDataId,
-        episode_number: data.episodeNumber
+        episode_number: data.episodeNumber,
+        season_jw_id: data.seasonJwId
       })
     if (isPost == false)
       return new EpisodeDataSchema({
         season_data_id: oldDoc.season_data_id,
-        episode_number: data?.episode_number != null ? data.episode_number : oldDoc.episodeNumber,
+        season_jw_id: oldDoc.season_jw_id,
+        episode_number: oldDoc.episode_number,
         watched: data?.watched != null ? data.watched : oldDoc.watched
       })
   },
 
   CommentSchema: (oldDoc, data = null, isPost = false) => {
+    if (oldDoc == null && data == null) return {}
     if (isPost == true)
       return new CommentSchema({
         user_id: data.userId,
@@ -104,6 +106,7 @@ export default {
   },
 
   CommentLikesSchema: (oldDoc, data = null, isPost = false) => {
+    if (oldDoc == null) return {}
     if (isPost == true)
       return new CommentLikesSchema({
         comment_id: data.commentId,

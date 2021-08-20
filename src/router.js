@@ -68,7 +68,8 @@ router.get('/jw_info', [tokenVerify], async (req, res) => {
     if (id == 0) throw "Unable to resolve id"
 
     const data = await Utils.fetchJWInfo(type, id)
-    const userData = await GetUserData({ userId: user_id, jwId: jw_id, type: type })
+
+    const userData = await GetUserData({ userId: user_id, jwId: id, type: type })
 
     data.userData = userData
 

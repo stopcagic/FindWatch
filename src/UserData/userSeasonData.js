@@ -18,15 +18,14 @@ router.get("/userSeasonData", async (req, res) => {
   }
 })
 
-router.patch("/userSeasonData/:userid/:userdataid/:number", async (req, res) => {
+router.patch("/userSeasonData/:userid/:seasonjwid", async (req, res) => {
 
-  const userDataId = req.params.userdataid
   const userId = req.params.userid
-  const seasonNumber = req.params.number
+  const seasonJwId = req.params.seasonjwid
   const data = req.body;
 
   try {
-    await PatchUserSeasonData(userId, userDataId, seasonNumber, data)
+    await PatchUserSeasonData(userId, seasonJwId, data)
 
     res.json({ "success": true })
   } catch (err) {

@@ -31,7 +31,8 @@ export default async data => {
         for (const y of episodes) {
           const episodeResponse = await PostUserEpisodeData({
             seasonDataId: seasonResponse.season_id.toString(),
-            episodeNumber: y.episode_number
+            episodeNumber: y.episode_number,
+            seasonJwId: x.id
           });
 
           response.userEpisodeDataId = episodeResponse.episode_id;

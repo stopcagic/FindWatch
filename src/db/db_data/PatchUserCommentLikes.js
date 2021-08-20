@@ -10,7 +10,16 @@ export default async (commentId, userId, data) => {
 
     let oldDoc = await db.collection("comment_likes").findOne({ comment_id: ObjectId(commentId), user_id: ObjectId(userId) });
     oldDoc = createSchemas.CommentLikesSchema(oldDoc, null)
-    if (oldDoc == {}) throw "Invalid commentId or userId"
+    if (Object.keys(oldDoc).length === 0 && oldDoc.constructor === Object) {
+      try {
+        await CreateUserData({ jwId: jwId, userId: userId, type: type })
+        oldDoc = await db.collection("comment_likes").findOne({ comment_id: ObjectId(commentId), user_id: ObjectId(userId) });
+        oldDoc = createSchemas.CommentLikesSchema(oldDoc, null)
+
+      } catch (error) {
+        throw "Error: Failed To create user data"
+      }
+    }
 
     const commentLikesData = createSchemas.CommentLikesSchema(oldDoc, data)
 

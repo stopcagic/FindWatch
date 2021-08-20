@@ -13,14 +13,6 @@ export default async data => {
     if (response.length == 0)
       return {}
 
-    // const schemas = response.map(x => {
-    //   let id = x._id
-    //   let schema = createSchemas.SeasonDataSchema(x);
-    //   schema._id = id
-
-    //   return schema
-    // })
-
     return response
 
   } catch (error) {

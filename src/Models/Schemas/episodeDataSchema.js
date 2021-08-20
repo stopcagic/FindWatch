@@ -6,6 +6,10 @@ const episodeData = new mongoose.Schema({
     type: ObjectId,
     required: true
   },
+  season_jw_id: {
+    type: Number,
+    required: true
+  },
   episode_number: {
     type: Number,
     required: true

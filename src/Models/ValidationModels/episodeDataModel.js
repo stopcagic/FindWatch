@@ -6,5 +6,8 @@ export default Joi.object({
     .required(),
   episode_number: Joi.number()
     .positive()
-    .required()
+    .required(),
+  season_jw_id: Joi.number()
+    .positive()
+    .required(),
 })
