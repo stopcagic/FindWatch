@@ -7,6 +7,8 @@ export default Joi.object({
   jw_id: Joi.string()
     .alphanum()
     .required(),
+  season_jw_id: Joi.number(),
+  episode_number: Joi.number(),
   content: Joi.string()
     .min(1)
     .max(255)

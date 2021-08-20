@@ -42,12 +42,14 @@ const episodeDataValidation = data => {
     return error.details[0].message;
 }
 
-const commentDataValidation = (data, date) => {
+const commentDataValidation = (data) => {
   const schema = commentDataModel
 
   const { error } = schema.validate({
     user_id: data.userId,
     jw_id: data.jwId,
+    season_jw_id: data.seasonJwId,
+    episode_number: data.episodeNumber,
     content: data.content
   })
   if (error)

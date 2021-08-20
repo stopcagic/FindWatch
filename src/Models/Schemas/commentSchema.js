@@ -10,6 +10,14 @@ const CommentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  season_jw_id: {
+    type: Number,
+    default: null
+  },
+  episode_number: {
+    type: Number,
+    default: null
+  },
   content: {
     type: String,
     required: true,

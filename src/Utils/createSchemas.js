@@ -87,6 +87,8 @@ export default {
       return new CommentSchema({
         user_id: data.userId,
         jw_id: data.jwId,
+        season_jw_id: data?.seasonJwId,
+        episode_number: data?.episodeNumber,
         content: data.content,
         date_time: new Date()
       })
@@ -95,6 +97,8 @@ export default {
       return new CommentSchema({
         user_id: oldDoc.user_id,
         jw_id: oldDoc.jw_id,
+        season_jw_id: oldDoc.season_jw_id,
+        episode_number: oldDoc.episode_number,
         content: data?.content != null ? data.content : oldDoc.content,
         date_time: oldDoc.date_time,
         edited: data != null ? true : oldDoc.edited,
@@ -106,7 +110,7 @@ export default {
   },
 
   CommentLikesSchema: (oldDoc, data = null, isPost = false) => {
-    if (oldDoc == null) return {}
+    if (oldDoc == null && data == null) return {}
     if (isPost == true)
       return new CommentLikesSchema({
         comment_id: data.commentId,

@@ -7,19 +7,10 @@ import createSchemas from "../../Utils/createSchemas"
 export default async (commentId, userId, data) => {
   try {
     let db = await connect();
-
     let oldDoc = await db.collection("comment_likes").findOne({ comment_id: ObjectId(commentId), user_id: ObjectId(userId) });
-    oldDoc = createSchemas.CommentLikesSchema(oldDoc, null)
-    if (Object.keys(oldDoc).length === 0 && oldDoc.constructor === Object) {
-      try {
-        await CreateUserData({ jwId: jwId, userId: userId, type: type })
-        oldDoc = await db.collection("comment_likes").findOne({ comment_id: ObjectId(commentId), user_id: ObjectId(userId) });
-        oldDoc = createSchemas.CommentLikesSchema(oldDoc, null)
 
-      } catch (error) {
-        throw "Error: Failed To create user data"
-      }
-    }
+    oldDoc = createSchemas.CommentLikesSchema(oldDoc, null)
+    if (Object.keys(oldDoc).length === 0 && oldDoc.constructor === Object) throw "commentId does not exist"
 
     const commentLikesData = createSchemas.CommentLikesSchema(oldDoc, data)
 
