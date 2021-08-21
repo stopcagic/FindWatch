@@ -40,7 +40,7 @@ const movieUserSchema = new mongoose.Schema({
     default: false
   },
   release_year: {
-    type: Date,
+    type: Number,
     required: true
   },
   user_id: {

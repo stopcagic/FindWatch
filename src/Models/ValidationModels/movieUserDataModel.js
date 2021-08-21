@@ -11,5 +11,9 @@ export default Joi.object({
     .required(),
   type: Joi.string()
     .alphanum()
-    .required()
+    .required(),
+  rating: Joi.number()
+    .min(1)
+    .max(10),
+  release_date: Joi.number()
 })

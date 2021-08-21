@@ -24,7 +24,8 @@ export default {
         release_year: data.releaseYear,
         genres: data.genres,
         type: data.type,
-        user_id: data.userId
+        user_id: data.userId,
+        release_year: data.release_date
       })
     if (isPost == false) {
       return new MovieUserSchema({

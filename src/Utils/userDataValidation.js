@@ -11,7 +11,8 @@ const movieUserDataValidation = data => {
     user_id: data.userId,
     jw_id: data.jwId,
     genres: data.genres,
-    type: data.type
+    type: data.type,
+    release_date: data.release_date
   })
   if (error)
     return error.details[0].message;
