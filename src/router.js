@@ -7,6 +7,10 @@ import possibleFilters from './Models/possibleFilters';
 import filter from "./Utils/filterHelper"
 import fetchJwId from "./Utils/imdbIdToJwId"
 import GetUserData from "./db/db_data/CreateData/GetUserData";
+import GetDataByProperty from "./db/db_data/GetDataByProperty"
+import GetRecommendedMovies from "./db/db_data/GetRecommendedMovies";
+import PatchUserData from "./db/db_data/CreateData/PatchUserData";
+
 
 const router = express.Router();
 dotenv.config();
@@ -115,6 +119,76 @@ router.post('/filter', async (req, res) => {
   }
   catch (error) {
     res.status(400).send(error.message)
+  }
+
+})
+
+router.get("/:userid/:property", async (req, res) => {
+
+  const userId = req.params.userid;
+  const property = req.params.property;
+
+  try {
+    const response = await GetDataByProperty({ userId: userId, property: property });
+
+    const data = []
+    for (const x of response) {
+      data.push(await Utils.fetchJWInfo(x.type, x.id))
+    }
+
+    if (response == null) return res.status(422).send("Data cannot be empty.")
+    if (response.lenght == 0) return res.status(200);
+
+    res.json(data)
+
+  } catch (error) {
+    res.status(500).send(error)
+  }
+
+})
+
+router.get('/recommendations', async (req, res) => {
+  try {
+
+    const userId = req.query.userId;
+
+    const requestBody = filter()
+
+    const { items } = await Utils.justWatchAPIfetchData(`/en_US/popular`, requestBody)
+
+    let data = items
+
+    if (userId == undefined) {
+      return res.json(data)
+    }
+
+    const movieRecommendations = await GetRecommendedMovies(userId)
+
+
+    //pogledaj kako dobiti type i dal mogu nesto drugo pozvati(malo brze)
+    data = []
+    for (const x of movieRecommendations) {
+      data.push(await Utils.fetchJWInfo(x.type, x.movieId))
+    }
+
+    res.json({ movies })
+  }
+  catch (error) {
+    res.status(400).send(error.message)
+  }
+
+})
+
+router.get('/notifications', async (req, res) => {
+  try {
+    const userId = req.query.userId;
+
+    const response = await PatchUserData(userId)
+
+    res.json(response)
+  }
+  catch (error) {
+    res.status(400).send(error)
   }
 
 })

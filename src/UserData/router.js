@@ -1,6 +1,5 @@
 import express from "express";
 
-import getUserDataByProperty from "./getUserDataByProperty"
 import movieUserData from "./movieUserData";
 import userSeasonData from "./userSeasonData";
 import userEpisodeData from "./userEpisodeData";
@@ -10,7 +9,6 @@ import tokenVerify from "../Utils/tokenVerify"
 
 const router = express.Router();
 
-router.use("/data", [tokenVerify], getUserDataByProperty)
 router.use("/data", [tokenVerify], movieUserData)
 router.use("/data", [tokenVerify], userSeasonData)
 router.use("/data", [tokenVerify], userEpisodeData)

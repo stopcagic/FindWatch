@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
-import connect from "../index"; import createSchemas from '../../Utils/createSchemas';
+import connect from "../index";
+import createSchemas from '../../Utils/createSchemas';
 
 export default async data => {
   if (data == null || data.userId == null || data.movieUserDataId == null) return null

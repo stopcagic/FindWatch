@@ -5,6 +5,7 @@ import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
 import GetMovieUserData from "./GetMovieUserData"
 import CreateUserData from "./CreateData/CreateUserData";
+import { updateUserSimilarityScores } from "../../Utils/similarityUtils"
 
 export default async (jwId, userId, type, data) => {
   try {
@@ -32,6 +33,7 @@ export default async (jwId, userId, type, data) => {
       { jw_id: jwId, user_id: ObjectId(userId) }, { $set: changes });
 
     if (result.modifiedCount == 1) {
+      await updateUserSimilarityScores(userId)
       return result
     }
     else {

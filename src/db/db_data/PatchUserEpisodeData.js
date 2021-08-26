@@ -5,6 +5,8 @@ import connect from "../../db/index"
 import createSchemas from "../../Utils/createSchemas"
 import Utils from "../../Utils/callEndpointUtil"
 import CreateUserData from "./CreateData/CreateUserData";
+import { updateUserSimilarityScores } from "../../Utils/similarityUtils"
+
 
 
 export default async (userId, seasonJwId, episodeNumber, data) => {
@@ -35,6 +37,7 @@ export default async (userId, seasonJwId, episodeNumber, data) => {
       { season_jw_id: parseInt(seasonJwId), episode_number: parseInt(episodeNumber) }, { $set: changes });
 
     if (result.modifiedCount == 1) {
+      await updateUserSimilarityScores(userId)
       return result
     }
     else {
