@@ -9,11 +9,15 @@ export default async userId => {
   try {
     const db = await connect()
 
-
     const cursor = await db.collection("user_similarity").find({ users: userId })
 
-    const similarityData = _(await cursor.toArray())
+    const userData = await cursor.toArray()
+    if (userData.length === 0) throw "User does not exist"
+
+    const similarityData = _(userData)
       .orderBy('pcc', 'desc').take(5).value()
+
+    if (similarityData.length == 0) throw "Something went wrong"
 
     const users = _(similarityData).map(similarity => {
       return {

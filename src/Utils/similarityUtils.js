@@ -50,9 +50,7 @@ const filterUserMutualMovies = (user1, user2, mutateObjects = false) => {
 
 const updateUserSimilarityScores = async (userId) => {
   const users = await GetUsers()
-
   const mainUser = await getUserMovieReviews(userId)
-
   const mainUserMovies = _.map(mainUser, 'jw_id')
 
   return Promise.all(

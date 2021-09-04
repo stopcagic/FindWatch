@@ -32,8 +32,9 @@ export default async (jwId, userId, type, data) => {
     let result = await db.collection("movie_user_data").updateOne(
       { jw_id: jwId, user_id: ObjectId(userId) }, { $set: changes });
 
-    if (result.modifiedCount == 1) {
+    if (result.modifiedCount === 1) {
       await updateUserSimilarityScores(userId)
+
       return result
     }
     else {

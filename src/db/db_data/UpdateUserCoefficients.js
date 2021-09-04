@@ -5,20 +5,24 @@ export default async data => {
   try {
     const db = await connect()
 
-    let oldDoc = {}
-    oldDoc[data.key] = { $exists: true }
+    const filter = { ids: data.key }
 
-    let query = {}
-    query[data.key] = data.value
+    const query = {
+      ids: data.key,
+      euc_dis: data.value.euclideanDistance,
+      man_dis: data.value.manhattanDistance,
+      pcc: data.value.pcc,
+      users: data.value.users
+    }
 
     const result = await db.collection("user_similarity").replaceOne(
-      oldDoc, query, { upsert: true });
+      filter, query, { upsert: true });
 
     if (result.modifiedCount == 1) {
       return result
     }
 
-    if (result.insertedCount == 1) {
+    if (result.upsertedCount == 1) {
       return result
     }
     else {

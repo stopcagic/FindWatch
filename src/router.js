@@ -174,7 +174,8 @@ router.get('/recommendations', async (req, res) => {
     res.json({ movies })
   }
   catch (error) {
-    res.status(400).send(error.message)
+    if (error.message == undefined) res.status(500).send(error)
+    res.status(500).send(error.message)
   }
 
 })
