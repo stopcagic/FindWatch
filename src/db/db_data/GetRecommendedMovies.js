@@ -12,29 +12,31 @@ export default async userId => {
     const cursor = await db.collection("user_similarity").find({ users: userId })
 
     const userData = await cursor.toArray()
+
     if (userData.length === 0) throw "User does not exist"
 
     const similarityData = _(userData)
-      .orderBy('pcc', 'desc').take(5).value()
+      .orderBy('pcc', 'desc').filter(x => x.pcc > 0).take(5).value()
 
     if (similarityData.length == 0) throw "Something went wrong"
 
     const users = _(similarityData).map(similarity => {
       return {
         ..._.omit(similarity, 'users'),
-        username: _.remove(similarity.users, user => user !== userId)[0],
+        userId: _.remove(similarity.users, user => user !== userId)[0],
       }
     }).value()
 
-    const mainUser = await GetAllMovieUserData({ user_id: ObjectId(user.userId) })
+    const mainUser = await GetAllMovieUserData({ user_id: ObjectId(userId) })
 
     const mainUserMovies = _.map(mainUser, 'jw_id')
+    const allMovieUserData = await GetAllMovieUserData()
 
-    await Promise.map(users, async user => {
-      const cursor = await await GetAllMovieUserData()
-      user.reviews = _(_.filter(await cursor.toArray(), review => _.includes(mainUserMovies, review.jw_id)))
-        .orderBy('rating', 'desc').take(5).value()
-    })
+    await Promise.all(
+      users.map(async user => {
+        user.reviews = _(_.filter(allMovieUserData, review => !_.includes(mainUserMovies, review.jw_id)))
+          .orderBy('rating', 'desc').take(30).value()
+      }))
 
     let movieRecommendations = []
 
