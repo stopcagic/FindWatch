@@ -16,6 +16,13 @@ export default {
       email: req.body.email
     })
   },
+  PatchNewUserSchema: (oldDoc, username, hashPassword) => {
+    return new UserSchema({
+      username: username != null ? username : oldDoc.username,
+      password: hashPassword != null ? hashPassword : oldDoc.password,
+      email: oldDoc.email
+    })
+  },
   MovieUserSchema: (oldDoc, data = null, isPost = false) => {
     if (isPost == true)
       return new MovieUserSchema({
