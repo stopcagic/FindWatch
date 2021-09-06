@@ -5,9 +5,10 @@ import connect from "../db/index"
 import createSchemas from "../Utils/createSchemas"
 import GetUser from "../db/db_data/GetUser";
 import router from "./login";
+import tokenVerify from "../Utils/tokenVerify";
 
 
-router.patch("/", async (req, res) => {
+router.patch("/", [tokenVerify], async (req, res) => {
   const data = req.body
 
   try {
