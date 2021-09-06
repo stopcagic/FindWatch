@@ -151,26 +151,10 @@ router.get('/recommendations', async (req, res) => {
   try {
 
     const userId = req.query.userId;
-    let data = []
-    const requestBody = filter()
 
-    if (userId == undefined)
-      return res.json(await Utils.justWatchAPIfetchData(`/en_US/popular`, requestBody))
+    const movieRecommendations = await GetRecommendedMovies(userId)
 
-    else {
-      const movieRecommendations = await GetRecommendedMovies(userId)
-
-      if (movieRecommendations.length < 10) data = await Utils.justWatchAPIfetchData(`/en_US/popular`, requestBody)
-
-      else {
-        for (const x of movieRecommendations) {
-          data.push(await Utils.fetchJWInfo(x.type, x.movieId))
-        }
-      }
-
-      res.json(data)
-    }
-
+    res.json(movieRecommendations)
   }
   catch (error) {
     if (error.message == undefined) res.status(500).send(error)
