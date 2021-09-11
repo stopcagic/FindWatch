@@ -29,13 +29,11 @@ const Utils = {
 
   async fetchID(name) {
     let SeriesTitle = await axios.get(`${imdbBaseUrl}/Search/${APikey}/${name}`);
-
     return SeriesTitle.data.results[0].id;
   },
 
   async fetchInfo(IMDbId, queryFilters) {
     let request = await axios.get(`${imdbBaseUrl}/Title/${APikey}/${IMDbId}/${queryFilters}`);
-
     return request.data;
   },
 
@@ -54,7 +52,6 @@ const Utils = {
   async fetchJWSeasonInfo(show_id) {
     let request = await axios.get(`${jwBaseUrl}/show_season/${show_id}/locale/en_US`);
     request.data.poster = generatePosterUrl(request.data.poster)
-
     return request.data;
   }
 }

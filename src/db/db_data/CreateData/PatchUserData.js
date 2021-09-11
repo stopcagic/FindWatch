@@ -35,7 +35,7 @@ export default async userId => {
             notifications.notifications.push({
               jw_id: seasonData.show_id,
               name: seasonData.show_title,
-              sesason_number: seasonData.season_number,
+              season_number: seasonData.season_number,
               poster: seasonData.poster
             })
 
@@ -54,7 +54,7 @@ export default async userId => {
             notifications.notifications.push({
               jw_id: seasonData.show_id,
               name: seasonData.show_title,
-              sesason_number: seasonData.season_number,
+              season_number: seasonData.season_number,
               poster: seasonData.poster,
               episode_number: eps
             })
