@@ -14,6 +14,7 @@ export default async data => {
     const response = await cursor.toArray()
 
     const schemas = response.map(x => createSchemas.EpisodeDataSchema(x))
+    console.log(response.length);
     if (response.length == 0)
       return {}
 

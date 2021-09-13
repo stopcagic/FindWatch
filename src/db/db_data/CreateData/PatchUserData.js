@@ -25,10 +25,10 @@ export default async userId => {
 
         const db_show = await GetUserSeasonData({ userId: userId, movieUserDataId: item._id })
 
-        const newSeasonIds = show.seasons.filter(x => !db_show.some(y => x.id.toString() === y.jw_id.toString())).map(x => x.id)
+        const newSeasonIds = show.seasons.filter(x => !db_show.some(y => x.id.toString() === y.season_jw_id.toString())).map(x => x.id)
 
         for (const season of show.seasons) {
-          const seasonData = Utils.fetchJWSeasonInfo(season.id)
+          const seasonData = await Utils.fetchJWSeasonInfo(season.id)
           let seasonResponse = null
 
           if (newSeasonIds.includes(season.id)) {
@@ -45,8 +45,10 @@ export default async userId => {
               seasonJwId: seasonData.show_id, seasonNumber: seasonData.season_number
             });
           }
+
           const seasonUserDataId = db_show.filter(x => x.season_jw_id == season.id)
-          const db_eps = await GetUserEpisodeData(seasonUserDataId._id)
+
+          const db_eps = await GetUserEpisodeData({ seasonDataId: seasonUserDataId[0]._id })
 
           const newEpisodes = seasonData.episodes.filter(x => !db_eps.some(y => x.episode_number === y.episode_number))
 
