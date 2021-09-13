@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from "cors"
 
 import BaseRoutes from "./router"
 import MovieRouter from "./Movies/router"
@@ -12,8 +13,7 @@ const app = express();
 const port = process.env.PORT
 
 app.use(express.json());
-
-app.use(BaseRoutes)
+app.use(cors())
 
 app.use("/movies", MovieRouter);
 app.use("/shows", ShowRouter)
@@ -23,5 +23,6 @@ app.use("/user", login)
 app.use("/user", patchUser)
 app.use("/user", userDataRoutes)
 
+app.use(BaseRoutes)
 
 app.listen(port, () => console.log(`http://localhost:${port}`))
