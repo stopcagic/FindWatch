@@ -19,7 +19,7 @@ router.get('/', async (_, res) => {
   res.send("Welcome to FindWatch")
 })
 
-router.get('/search', [tokenVerify], async (req, res) => {
+router.get('/search', async (req, res) => {
   let word = req.query.expression;
 
   const requestBody = filter({ query: word })

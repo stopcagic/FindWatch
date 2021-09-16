@@ -37,7 +37,8 @@ router.post("/login", async (req, res) => {
 
     res.send({
       token: token,
-      username: user.username
+      username: user.username,
+      user_id: user._id
     })
 
   } catch (error) {
