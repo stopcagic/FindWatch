@@ -37,7 +37,7 @@ const Utils = {
     return request.data;
   },
 
-  async fetchJWInfo(type, jw_id) {
+  async fetchJWInfo(type, jw_id, getEps = false) {
     let request = await axios.get(`${jwBaseUrl}/${type}/${jw_id}/locale/en_US`);
     request.data.poster = generatePosterUrl(request.data.poster)
     let genreList = []
@@ -47,15 +47,17 @@ const Utils = {
     }))
     request.data.genres = genreList
 
-    for (const x of request.data.seasons) {
-      let eps = await Utils.fetchJWSeasonInfo(x.id.toString())
-      x.episodes = eps
+    if (type === "show" && getEps) {
+      for (const x of request.data.seasons) {
+        let eps = await Utils.fetchJWSeasonInfo(x.id.toString())
+        x.episodes = eps
+      }
     }
+
     return request.data;
   },
 
   async fetchJWSeasonInfo(show_id) {
-    console.log("hi");
     let request = await axios.get(`${jwBaseUrl}/show_season/${show_id}/locale/en_US`);
     request.data.poster = generatePosterUrl(request.data.poster)
     return request.data;
