@@ -46,10 +46,16 @@ const Utils = {
       full_name: genres[x].translation
     }))
     request.data.genres = genreList
+
+    for (const x of request.data.seasons) {
+      let eps = await Utils.fetchJWSeasonInfo(x.id.toString())
+      x.episodes = eps
+    }
     return request.data;
   },
 
   async fetchJWSeasonInfo(show_id) {
+    console.log("hi");
     let request = await axios.get(`${jwBaseUrl}/show_season/${show_id}/locale/en_US`);
     request.data.poster = generatePosterUrl(request.data.poster)
     return request.data;
