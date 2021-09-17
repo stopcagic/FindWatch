@@ -106,11 +106,12 @@ router.post('/filter', async (req, res) => {
     if (body == undefined) throw "Body cannot be empty."
 
     const options = {
-      content_types: [body.type],
+      content_types: body.type != null ? [body.type] : null,
       genres: body?.genres,
-      scoring_filter_types: { "imdb:score": { min_scoring_value: body?.rating?.min, max_scoring_value: body?.rating?.max } },
-      release_year_from: body?.releaseYear?.from,
-      release_year_until: body?.releaseYear?.to
+      scoring_filter_types: { "imdb:score": { min_scoring_value: parseInt(body?.rating?.min), max_scoring_value: parseInt(body?.rating?.max) } },
+      release_year_from: parseInt(body?.releaseYear?.from),
+      release_year_until: parseInt(body?.releaseYear?.to),
+      page_size: 100
     }
 
     const requestBody = filter(options)

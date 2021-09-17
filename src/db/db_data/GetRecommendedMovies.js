@@ -57,6 +57,7 @@ export default async userId => {
 
     let movieRecommendations = []
 
+
     users.forEach(user => user.reviews.forEach(review => {
       let apiRating = apiMovieScores.find(x => x.id == review.jw_id)?.imdb_rating
       movieRecommendations.push({
@@ -66,16 +67,20 @@ export default async userId => {
       })
     }))
 
-    _(movieRecommendations)
+    let filteredMovies = _.uniqBy(movieRecommendations, "movieId")
+
+    _(filteredMovies)
       .orderBy('rating', 'desc')
       .unionBy('movieId')
       .value()
 
-    for (const x of movieRecommendations) {
+    for (const x of filteredMovies) {
       data.push(await Utils.fetchJWInfo(x.type, x.movieId))
     }
 
-    if (data < 10) return apiMovies;
+    let unwatchedMovies = apiMovies.items.filter(x => !mainUserMovies.includes(x.id.toString()));
+
+    if (data < 10) return unwatchedMovies
 
     return data;
 
