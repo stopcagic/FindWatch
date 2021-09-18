@@ -30,7 +30,7 @@ export default async userId => {
 
     const userData = await cursor.toArray()
 
-    if (userData.length === 0) throw "User does not exist"
+    if (userData.length === 0) return apiMovies
 
     const similarityData = _(userData)
       .orderBy('pcc', 'desc').filter(x => x.pcc > 0).take(5).value()

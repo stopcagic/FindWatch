@@ -1,8 +1,23 @@
 import express from "express";
 import GetUserSeasonData from "../db/db_data/GetUserSeasonData"
+import GetUserSpeficicSeasonData from "../db/db_data/GetUserSpeficicSeasonData"
 import PatchUserSeasonData from "../db/db_data/PatchUserSeasonData"
 
 const router = express.Router();
+
+router.get("/userSeasonData/season", async (req, res) => {
+  const data = req.query;
+  try {
+    const response = await GetUserSpeficicSeasonData(data);
+    if (response == null) return res.status(422).send("Data cannot be empty.");
+    if (response == {}) return res.status(200);
+
+    res.json(response)
+
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
 
 router.get("/userSeasonData", async (req, res) => {
   const data = req.query;
@@ -17,6 +32,7 @@ router.get("/userSeasonData", async (req, res) => {
     res.status(500).send(error)
   }
 })
+
 
 router.patch("/userSeasonData/:userid/:seasonjwid", async (req, res) => {
 
